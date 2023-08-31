@@ -7,6 +7,7 @@ function App() {
 
   useEffect(() => {
     getFlower();
+    getQuestions();
   }, []);
 
   function getFlower() {
@@ -17,6 +18,14 @@ function App() {
         setLoading(false);
       });
   }
+
+  function getQuestions() {
+    fetch("/questions")
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  }
+
   return (
     <div className="App">
       {!loading && (
