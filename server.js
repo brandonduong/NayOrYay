@@ -20,10 +20,10 @@ app.get("/flower", (req, res) => {
 });
 
 const connection = mysql.createConnection({
-  host: process.env.DATABASE_ENDPOINT,
-  user: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASS,
-  port: process.env.DATABASE_PORT,
+  host: process.env.RDS_HOSTNAME,
+  user: process.env.RDS_USERNAME,
+  password: process.env.RDS_PASSWORD,
+  port: process.env.RDS_PORT,
 });
 
 connection.connect((err) => {
