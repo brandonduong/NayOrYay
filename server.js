@@ -1,6 +1,7 @@
 import path from "path";
 import express from "express";
 import { Client } from "pg";
+import { CognitoJwtVerifier } from "aws-jwt-verify";
 
 require("dotenv").config();
 const bodyParser = require("body-parser");
@@ -24,6 +25,21 @@ async function newClient() {
   });
   await client.connect();
   return client;
+}
+
+function getCookie(cookieString, cname) {
+  let name = cname + "=";
+  let ca = cookieString.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
 }
 
 app.get("/categories", async (req, res) => {
@@ -87,20 +103,39 @@ app.post("/vote", async (req, res) => {
   try {
     const { id, vote } = req.body;
     console.log("voting question: ", id, vote);
+    const id_token = getCookie(req.headers.cookie, "id_token");
 
-    let text;
-    if (!vote.localeCompare("yay")) {
-      text = "UPDATE questions SET first=first+1 WHERE id=$1";
-    } else {
-      text = "UPDATE questions SET second=second+1 WHERE id=$1";
+    // Verifier that expects valid access tokens:
+    const verifier = CognitoJwtVerifier.create({
+      userPoolId: process.env.USER_POOL_ID,
+      tokenUse: "id",
+      clientId: process.env.CLIENT_ID,
+    });
+
+    let payload;
+    try {
+      payload = await verifier.verify(id_token);
+      console.log("Token is valid. Payload:", payload);
+    } catch {
+      console.log("Token not valid!");
     }
 
-    const q = {
-      text,
-      values: [id],
-    };
-    await client.query(q);
-    res.status(200);
+    if (payload) {
+      // Vote
+      let text;
+      if (!vote.localeCompare("yay")) {
+        text = "UPDATE questions SET first=first+1 WHERE id=$1";
+      } else {
+        text = "UPDATE questions SET second=second+1 WHERE id=$1";
+      }
+
+      const q = {
+        text,
+        values: [id],
+      };
+      await client.query(q);
+      res.status(200);
+    }
   } catch (err) {
     console.error("Error retrieving question: ", err);
     res.status(500).send({ message: "Error retrieving question" });

@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -46,6 +46,9 @@ export default function QuestionPage() {
             <h1>{question.id}</h1>
             <h4>{question.ts}</h4>
             <Typography variant="h5">{question.text}</Typography>
+            <Button onClick={() => voteQuestion(question.id, "yay")}>
+              Yay
+            </Button>
           </>
         )}
       </div>
