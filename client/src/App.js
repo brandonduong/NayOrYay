@@ -1,24 +1,10 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { Container } from "@mui/material";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import QuestionPage from "./components/QuestionPage";
+import CategoriesPage from "./components/CategoriesPage";
 
 function App() {
-  const [flower, setFlower] = useState({});
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getFlower();
-    getQuestions();
-  }, []);
-
-  function getFlower() {
-    fetch("/flower")
-      .then((response) => response.json())
-      .then((data) => {
-        setFlower(data);
-        setLoading(false);
-      });
-  }
-
   function getQuestions() {
     fetch("/questions")
       .then((response) => response.json())
@@ -27,14 +13,24 @@ function App() {
   }
 
   return (
-    <div className="App">
-      {!loading && (
-        <>
-          <h1>{flower.name}</h1>
-          <h3>{flower.colour}</h3>
-        </>
-      )}
-    </div>
+    <BrowserRouter>
+      <Container
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === "light"
+              ? theme.palette.grey[100]
+              : theme.palette.grey[900],
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+        }}
+      >
+        <Routes>
+          <Route index element={<CategoriesPage />} />
+          <Route path=":category/:id" element={<QuestionPage />} />
+        </Routes>
+      </Container>
+    </BrowserRouter>
   );
 }
 
