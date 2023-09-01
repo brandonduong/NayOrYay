@@ -1,8 +1,9 @@
 import "./App.css";
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import QuestionPage from "./components/QuestionPage";
 import CategoriesPage from "./components/CategoriesPage";
+import HomePage from "./components/HomePage";
 
 function App() {
   function getQuestions() {
@@ -14,7 +15,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Container
+      <Box
         sx={{
           backgroundColor: (theme) =>
             theme.palette.mode === "light"
@@ -25,11 +26,14 @@ function App() {
           overflow: "auto",
         }}
       >
-        <Routes>
-          <Route index element={<CategoriesPage />} />
-          <Route path=":category/:id" element={<QuestionPage />} />
-        </Routes>
-      </Container>
+        <Container>
+          <Routes>
+            <Route index element={<HomePage />} />
+            <Route path="categories" element={<CategoriesPage />} />
+            <Route path=":category/:id" element={<QuestionPage />} />
+          </Routes>
+        </Container>
+      </Box>
     </BrowserRouter>
   );
 }

@@ -26,6 +26,25 @@ async function newClient() {
   return client;
 }
 
+app.get("/categories", async (req, res) => {
+  const client = await newClient();
+  try {
+    console.log("fetching categories: ");
+
+    const q = {
+      text: "SELECT category, count(*) FROM questions GROUP BY category",
+    };
+    const query = await client.query(q);
+    console.log(query.rows);
+    res.send(query.rows);
+  } catch (err) {
+    console.error("Error retrieving category: ", err);
+    res.status(500).send({ message: "Error retrieving category" });
+  } finally {
+    await client.end();
+  }
+});
+
 app.get("/questions", async (req, res) => {
   const client = await newClient();
   try {
@@ -42,15 +61,15 @@ app.get("/questions", async (req, res) => {
   }
 });
 
-app.get("/question/:category/:id", async (req, res) => {
+app.get("/question/:category/:offset", async (req, res) => {
   const client = await newClient();
   try {
-    const { id, category } = req.params;
-    console.log("fetching question: ", category, id);
+    const { offset, category } = req.params;
+    console.log("fetching question: ", category, offset);
 
     const q = {
-      text: "SELECT * FROM questions WHERE id=$1 AND category=$2",
-      values: [id, category],
+      text: "SELECT * FROM questions WHERE category=$1 ORDER BY ts OFFSET $2 LIMIT 1",
+      values: [category, offset],
     };
     const query = await client.query(q);
     console.log(query.rows[0]);
