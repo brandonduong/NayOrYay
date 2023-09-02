@@ -46,9 +46,29 @@ export default function HomePage() {
 `;
   }
 
+  function logout() {
+    window.location.href = `
+    https://warmtake.auth.us-east-1.amazoncognito.com/logout?client_id=${process.env.REACT_APP_CLIENT_ID}&logout_uri=http://localhost:3000/
+`;
+    // remove cookies
+    document.cookie =
+      "id_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }
+
   function isLoggedIn() {
     return getCookie("id_token");
   }
 
-  return <>Home{!isLoggedIn() && <Button onClick={login}>Login</Button>}</>;
+  return (
+    <>
+      Home
+      {!isLoggedIn() ? (
+        <Button onClick={login}>Login</Button>
+      ) : (
+        <Button onClick={logout}>Logout</Button>
+      )}
+    </>
+  );
 }
