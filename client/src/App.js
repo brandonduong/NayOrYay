@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCategories } from "./features/categories/categoriesSlice";
 import { getUser } from "./utils/helper";
-import { setVotes } from "./features/votes/votesSlice";
+import { setFetched, setVotes } from "./features/votes/votesSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +36,7 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        dispatch(setFetched(true));
         dispatch(setVotes(data));
       })
       .catch((error) => console.error(error));

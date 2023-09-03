@@ -1,4 +1,10 @@
-import { Button, Stack, Typography, capitalize } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+  capitalize,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Layout from "../Layout";
@@ -17,8 +23,10 @@ export default function QuestionPage() {
       (q) => q.categoryId === id && !q.category.localeCompare(category)
     ) || false
   );
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!question);
+  const [voting, setVoting] = useState(false);
   const votes = useSelector((state) => state.votes.value);
+  const fetched = useSelector((state) => state.votes.fetched);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,15 +40,16 @@ export default function QuestionPage() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setLoading(false);
         setQuestion(data);
         const newQuestion = { ...data, categoryId: id };
         dispatch(setQuestions([...questions, newQuestion]));
+        setLoading(false);
       })
       .catch((error) => console.error(error));
   }
 
   function voteQuestion(id, vote) {
+    setVoting(true);
     fetch(`/vote`, {
       method: "POST",
       headers: {
@@ -57,6 +66,7 @@ export default function QuestionPage() {
         if (!voted()) {
           dispatch(setVotes([...votes, newVote]));
         }
+        setVoting(false);
       })
       .catch((error) => console.error(error));
   }
@@ -65,38 +75,58 @@ export default function QuestionPage() {
     return votes.filter((vote) => vote.questionid === question.id).length !== 0;
   }
 
+  function handleNay() {
+    if (getUser()) {
+      voteQuestion(question.id, "nay");
+    }
+  }
+
+  function handleYay() {
+    if (getUser()) {
+      voteQuestion(question.id, "yay");
+    }
+  }
+
   return (
     <Layout
       title={`${capitalize(category)} - No. ${id}`}
       subtitle={question.text}
       home
     >
-      <Typography
-        textAlign={"center"}
-        variant="body1"
-        fontWeight={700}
-        marginBottom={"2rem"}
-      >
-        Asked by: {question.author}
-      </Typography>
+      {!loading ? (
+        <>
+          <Typography
+            textAlign={"center"}
+            variant="body1"
+            fontWeight={700}
+            marginBottom={"2rem"}
+          >
+            Asked by: {question.author}
+          </Typography>
 
-      {!voted() && (
-        <Stack direction={"row"} spacing={2}>
-          <CustomButton
-            variant={"outlined"}
-            color={"black"}
-            onClick={() => voteQuestion(question.id, "nay")}
-          >
-            Nay
-          </CustomButton>
-          <CustomButton
-            variant={"contained"}
-            color={"black"}
-            onClick={() => voteQuestion(question.id, "yay")}
-          >
-            Yay
-          </CustomButton>
-        </Stack>
+          {!voting && (fetched || !getUser()) && !voted() && (
+            <Stack direction={"row"} spacing={2}>
+              <CustomButton
+                variant={"outlined"}
+                color={"black"}
+                onClick={handleNay}
+              >
+                Nay
+              </CustomButton>
+              <CustomButton
+                variant={"contained"}
+                color={"black"}
+                onClick={handleYay}
+              >
+                Yay
+              </CustomButton>
+            </Stack>
+          )}
+        </>
+      ) : (
+        <Typography textAlign={"center"}>
+          <CircularProgress color="inherit" />
+        </Typography>
       )}
     </Layout>
   );
