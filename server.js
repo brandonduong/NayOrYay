@@ -100,47 +100,72 @@ app.get("/question/:category/:offset", async (req, res) => {
 
 app.post("/vote", async (req, res) => {
   const client = await newClient();
+  const { id, vote } = req.body;
+  console.log("voting question: ", id, vote);
+  const id_token = getCookie(req.headers.cookie, "id_token");
+
+  // Verifier that expects valid access tokens:
+  const verifier = CognitoJwtVerifier.create({
+    userPoolId: process.env.USER_POOL_ID,
+    tokenUse: "id",
+    clientId: process.env.CLIENT_ID,
+  });
+
+  let payload;
   try {
-    const { id, vote } = req.body;
-    console.log("voting question: ", id, vote);
-    const id_token = getCookie(req.headers.cookie, "id_token");
+    payload = await verifier.verify(id_token);
+    console.log("Token is valid. Payload:", payload);
+  } catch {
+    console.log("Token not valid!");
+    res.status(500).send({ message: "Token invalid" });
+  }
 
-    // Verifier that expects valid access tokens:
-    const verifier = CognitoJwtVerifier.create({
-      userPoolId: process.env.USER_POOL_ID,
-      tokenUse: "id",
-      clientId: process.env.CLIENT_ID,
-    });
-
-    let payload;
+  // Check valid vote
+  if (payload && (!vote.localeCompare("yay") || !vote.localeCompare("nay"))) {
     try {
-      payload = await verifier.verify(id_token);
-      console.log("Token is valid. Payload:", payload);
-    } catch {
-      console.log("Token not valid!");
-    }
-
-    if (payload) {
-      // Vote
-      let text;
-      if (!vote.localeCompare("yay")) {
-        text = "UPDATE questions SET first=first+1 WHERE id=$1";
-      } else {
-        text = "UPDATE questions SET second=second+1 WHERE id=$1";
-      }
-
-      const q = {
-        text,
-        values: [id],
+      // Check if user didn't already vote for this question
+      const voteQ = {
+        text: "SELECT * FROM votes WHERE sub=$1",
+        values: [payload.sub],
       };
-      await client.query(q);
-      res.status(200).send();
+      const votes = await client.query(voteQ);
+      if (votes.rows.length === 0) {
+        // Update question counter
+        let text;
+        if (!vote.localeCompare("yay")) {
+          text = "UPDATE questions SET yay=yay+1 WHERE id=$1";
+        } else {
+          text = "UPDATE questions SET nay=nay+1 WHERE id=$1";
+        }
+
+        const q = {
+          text,
+          values: [id],
+        };
+
+        const query = await client.query(q);
+        console.log(query);
+
+        // Check if id is valid
+        if (query.rowCount === 1) {
+          // Add vote
+          const voteQ = {
+            text: "INSERT INTO votes (sub, questionid, vote) VALUES ($1, $2, $3)",
+            values: [payload.sub, id, vote],
+          };
+          await client.query(voteQ);
+        }
+
+        res.status(200).send({ message: "Voted!" });
+      } else {
+        res.status(500).send({ message: "Have already voted" });
+      }
+    } catch (err) {
+      console.error("Error retrieving question: ", err);
+      res.status(500).send({ message: "Error retrieving question" });
+    } finally {
+      await client.end();
     }
-  } catch (err) {
-    console.error("Error retrieving question: ", err);
-    res.status(500).send({ message: "Error retrieving question" });
-  } finally {
-    await client.end();
   }
 });
 

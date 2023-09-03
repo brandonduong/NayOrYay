@@ -32,3 +32,15 @@ export function logout() {
 export function isLoggedIn() {
   return getCookie("id_token");
 }
+
+export const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};
+
+export function getUser() {
+  return parseJwt(getCookie("id_token"));
+}

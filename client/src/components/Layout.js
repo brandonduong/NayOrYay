@@ -1,22 +1,51 @@
-import { Typography } from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
+import { getUser } from "../utils/helper";
 
 export default function Layout({ home, title, subtitle, children }) {
   const navigate = useNavigate();
   return (
     <>
       {home && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginTop: "1rem",
-          }}
-        >
-          <HomeIcon onClick={() => navigate("/")} sx={{ cursor: "pointer" }} />
-        </div>
+        <>
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"flex-end"}
+          >
+            <div
+              style={{
+                display: "flex",
+                marginTop: "1rem",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="h6"
+                textAlign={"center"}
+                sx={{
+                  fontFamily: "Roboto Condensed",
+                  cursor: "pointer",
+                  paddingRight: "0.25rem",
+                }}
+                onClick={() => navigate("/")}
+              >
+                Nay or Yay
+              </Typography>
+              <HomeIcon
+                onClick={() => navigate("/")}
+                sx={{ cursor: "pointer" }}
+              />
+            </div>
+            <Typography variant="body1" fontWeight={700}>
+              {getUser()["cognito:username"]}
+            </Typography>
+          </Stack>
+          <Divider sx={{ marginBottom: "2rem" }} />
+        </>
       )}
+
       <Typography
         variant="h3"
         textAlign={"center"}

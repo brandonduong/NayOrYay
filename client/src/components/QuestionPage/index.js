@@ -45,6 +45,16 @@ export default function QuestionPage() {
       subtitle={question.text}
       home
     >
+      {Boolean(category.localeCompare("daily")) && (
+        <Typography
+          textAlign={"center"}
+          variant="body1"
+          fontWeight={700}
+          marginBottom={"2rem"}
+        >
+          Asked by: {question.author}
+        </Typography>
+      )}
       <Stack direction={"row"} spacing={2}>
         <CustomButton
           variant={"outlined"}
