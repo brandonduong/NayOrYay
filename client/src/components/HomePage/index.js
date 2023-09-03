@@ -1,7 +1,15 @@
-import { Button } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { useEffect } from "react";
+import { isLoggedIn, login, logout } from "../../utils/helper";
+import CustomButton from "../CustomButton";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Layout from "../Layout";
 
 export default function HomePage() {
+  const navigate = useNavigate();
+  const categories = useSelector((state) => state.categories.value);
+
   useEffect(() => {
     const url = window.location;
 
@@ -25,50 +33,70 @@ export default function HomePage() {
       .split("=")[1];
   }
 
-  function getCookie(cname) {
-    let name = cname + "=";
-    let ca = document.cookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === " ") {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
+  const daily = categories.filter(
+    (category) => !category.category.localeCompare("daily")
+  )[0];
 
-  function login() {
-    window.location.href = `
-    https://warmtake.auth.us-east-1.amazoncognito.com/authorize?response_type=token&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=http://localhost:3000/
-`;
-  }
-
-  function logout() {
-    window.location.href = `
-    https://warmtake.auth.us-east-1.amazoncognito.com/logout?client_id=${process.env.REACT_APP_CLIENT_ID}&logout_uri=http://localhost:3000/
-`;
-    // remove cookies
-    document.cookie =
-      "id_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie =
-      "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  }
-
-  function isLoggedIn() {
-    return getCookie("id_token");
-  }
+  const dailyNum = daily && daily.count;
 
   return (
     <>
-      Home
-      {!isLoggedIn() ? (
-        <Button onClick={login}>Login</Button>
-      ) : (
-        <Button onClick={logout}>Logout</Button>
-      )}
+      <Layout
+        title="Nay or Yay"
+        subtitle="Voice your opinion to a new question every day."
+      >
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          alignItems={"center"}
+          marginBottom={3}
+        >
+          <CustomButton
+            variant={"outlined"}
+            color={"black"}
+            onClick={() => {
+              navigate(`/categories`);
+            }}
+          >
+            Categories
+          </CustomButton>
+
+          {!isLoggedIn() ? (
+            <CustomButton variant={"outlined"} color={"black"} onClick={login}>
+              Login
+            </CustomButton>
+          ) : (
+            <CustomButton variant={"outlined"} color={"black"} onClick={logout}>
+              Logout
+            </CustomButton>
+          )}
+          <CustomButton
+            variant={"contained"}
+            color={"black"}
+            onClick={() => navigate(`/daily/${dailyNum}`)}
+          >
+            Yay
+          </CustomButton>
+        </Stack>
+        <Typography
+          textAlign={"center"}
+          variant="body1"
+          fontWeight={700}
+          lineHeight={1.25}
+        >
+          {new Date().toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </Typography>
+        <Typography textAlign={"center"} variant="body1" lineHeight={1.25}>
+          No. {dailyNum}
+        </Typography>
+        <Typography textAlign={"center"} variant="body1" lineHeight={1.25}>
+          Edited by Brandon Duong
+        </Typography>
+      </Layout>
     </>
   );
 }

@@ -1,6 +1,8 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Stack, Typography, capitalize } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Layout from "../Layout";
+import CustomButton from "../CustomButton";
 
 export default function QuestionPage() {
   const { category, id } = useParams();
@@ -38,20 +40,23 @@ export default function QuestionPage() {
   }
 
   return (
-    <>
-      <div className="App">
-        {category} {id}
-        {!loading && (
-          <>
-            <h1>{question.id}</h1>
-            <h4>{question.ts}</h4>
-            <Typography variant="h5">{question.text}</Typography>
-            <Button onClick={() => voteQuestion(question.id, "yay")}>
-              Yay
-            </Button>
-          </>
-        )}
-      </div>
-    </>
+    <Layout title={`${capitalize(category)} - ${id}`} subtitle={question.text}>
+      <Stack direction={"row"} spacing={2}>
+        <CustomButton
+          variant={"outlined"}
+          color={"black"}
+          onClick={() => voteQuestion(question.id, "nay")}
+        >
+          Nay
+        </CustomButton>
+        <CustomButton
+          variant={"contained"}
+          color={"black"}
+          onClick={() => voteQuestion(question.id, "yay")}
+        >
+          Yay
+        </CustomButton>
+      </Stack>
+    </Layout>
   );
 }

@@ -48,7 +48,7 @@ app.get("/categories", async (req, res) => {
     console.log("fetching categories: ");
 
     const q = {
-      text: "SELECT category, count(*) FROM questions GROUP BY category",
+      text: "SELECT * FROM categories",
     };
     const query = await client.query(q);
     console.log(query.rows);
@@ -85,7 +85,7 @@ app.get("/question/:category/:offset", async (req, res) => {
 
     const q = {
       text: "SELECT * FROM questions WHERE category=$1 ORDER BY ts OFFSET $2 LIMIT 1",
-      values: [category, offset],
+      values: [category, offset - 1],
     };
     const query = await client.query(q);
     console.log(query.rows[0]);
@@ -134,7 +134,7 @@ app.post("/vote", async (req, res) => {
         values: [id],
       };
       await client.query(q);
-      res.status(200);
+      res.status(200).send();
     }
   } catch (err) {
     console.error("Error retrieving question: ", err);

@@ -1,29 +1,24 @@
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import Layout from "../Layout";
+import Category from "./Category";
+import { Grid } from "@mui/material";
 
 export default function CategoriesPage() {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    getCategories();
-  }, []);
-
-  function getCategories() {
-    fetch(`/categories`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setCategories(data);
-      })
-      .catch((error) => console.error(error));
-  }
+  const categories = useSelector((state) => state.categories.value);
 
   return (
-    <>
-      {categories.map(({ category, count }) => (
-        <>
-          {category}:{count}
-        </>
-      ))}
-    </>
+    <Layout title={"Categories"}>
+      <Grid container spacing={2}>
+        {categories.map(({ category, count, description }) => (
+          <Grid item xs="12" sm={"6"}>
+            <Category
+              category={category}
+              count={count}
+              description={description}
+            ></Category>
+          </Grid>
+        ))}
+      </Grid>
+    </Layout>
   );
 }
