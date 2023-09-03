@@ -7,18 +7,20 @@ export default function CategoriesPage() {
   const categories = useSelector((state) => state.categories.value);
 
   return (
-    <Layout title={"Categories"}>
-      <Grid container spacing={2}>
-        {categories.map(({ category, count, description }) => (
-          <Grid item xs="12" sm={"6"}>
-            <Category
-              category={category}
-              count={count}
-              description={description}
-            ></Category>
-          </Grid>
-        ))}
-      </Grid>
-    </Layout>
+    <>
+      <Layout title={"Categories"} home>
+        <Grid container spacing={2}>
+          {categories.map(({ category, count, description }) => (
+            <Grid item xs={12} sm={6} key={`${category}`}>
+              <Category
+                category={category}
+                count={count}
+                description={description}
+              ></Category>
+            </Grid>
+          ))}
+        </Grid>
+      </Layout>
+    </>
   );
 }

@@ -48,7 +48,7 @@ app.get("/categories", async (req, res) => {
     console.log("fetching categories: ");
 
     const q = {
-      text: "SELECT * FROM categories",
+      text: "SELECT * FROM categories ORDER BY id",
     };
     const query = await client.query(q);
     console.log(query.rows);

@@ -40,7 +40,11 @@ export default function QuestionPage() {
   }
 
   return (
-    <Layout title={`${capitalize(category)} - ${id}`} subtitle={question.text}>
+    <Layout
+      title={`${capitalize(category)} - No. ${id}`}
+      subtitle={question.text}
+      home
+    >
       <Stack direction={"row"} spacing={2}>
         <CustomButton
           variant={"outlined"}
