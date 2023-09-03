@@ -42,6 +42,24 @@ function getCookie(cookieString, cname) {
   return "";
 }
 
+async function verifyToken(id_token) {
+  // Verifier that expects valid access tokens:
+  const verifier = CognitoJwtVerifier.create({
+    userPoolId: process.env.USER_POOL_ID,
+    tokenUse: "id",
+    clientId: process.env.CLIENT_ID,
+  });
+
+  let payload;
+  try {
+    payload = await verifier.verify(id_token);
+    console.log("Token is valid. Payload:", payload);
+  } catch {
+    console.log("Token not valid!");
+  }
+  return payload;
+}
+
 app.get("/categories", async (req, res) => {
   const client = await newClient();
   try {
@@ -98,27 +116,33 @@ app.get("/question/:category/:offset", async (req, res) => {
   }
 });
 
+app.get("/votes/:sub", async (req, res) => {
+  const client = await newClient();
+  try {
+    const { sub } = req.params;
+    console.log("fetching votes for: ", sub);
+
+    const q = {
+      text: "SELECT * FROM votes WHERE sub=$1",
+      values: [sub],
+    };
+    const query = await client.query(q);
+    console.log(query.rows);
+    res.send(query.rows);
+  } catch (err) {
+    console.error("Error retrieving votes: ", err);
+    res.status(500).send({ message: "Error retrieving votes" });
+  } finally {
+    await client.end();
+  }
+});
+
 app.post("/vote", async (req, res) => {
   const client = await newClient();
   const { id, vote } = req.body;
   console.log("voting question: ", id, vote);
   const id_token = getCookie(req.headers.cookie, "id_token");
-
-  // Verifier that expects valid access tokens:
-  const verifier = CognitoJwtVerifier.create({
-    userPoolId: process.env.USER_POOL_ID,
-    tokenUse: "id",
-    clientId: process.env.CLIENT_ID,
-  });
-
-  let payload;
-  try {
-    payload = await verifier.verify(id_token);
-    console.log("Token is valid. Payload:", payload);
-  } catch {
-    console.log("Token not valid!");
-    res.status(500).send({ message: "Token invalid" });
-  }
+  const payload = await verifyToken(id_token);
 
   // Check valid vote
   if (payload && (!vote.localeCompare("yay") || !vote.localeCompare("nay"))) {
@@ -166,6 +190,8 @@ app.post("/vote", async (req, res) => {
     } finally {
       await client.end();
     }
+  } else {
+    res.status(500).send({ message: "Invalid token or vote" });
   }
 });
 

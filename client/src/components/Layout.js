@@ -1,7 +1,8 @@
 import { Divider, Stack, Typography } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
+import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDown";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../utils/helper";
+import Logo from "./Logo";
 
 export default function Layout({ home, title, subtitle, children }) {
   const navigate = useNavigate();
@@ -33,10 +34,8 @@ export default function Layout({ home, title, subtitle, children }) {
               >
                 Nay or Yay
               </Typography>
-              <HomeIcon
-                onClick={() => navigate("/")}
-                sx={{ cursor: "pointer" }}
-              />
+
+              <Logo onClick={() => navigate("/")} cursor="pointer" />
             </div>
             <Typography variant="body1" fontWeight={700}>
               {getUser()["cognito:username"]}

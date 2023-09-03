@@ -5,6 +5,7 @@ import CustomButton from "../CustomButton";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Layout from "../Layout";
+import Logo from "../Logo";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -41,6 +42,15 @@ export default function HomePage() {
 
   return (
     <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "0.75rem",
+        }}
+      >
+        <Logo width="80px" height="80px" />
+      </div>
       <Layout
         title="Nay or Yay"
         subtitle="Voice your opinion to a new question every day."
