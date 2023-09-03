@@ -7,11 +7,18 @@ import HomePage from "./components/HomePage";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCategories } from "./features/categories/categoriesSlice";
+import { getUser } from "./utils/helper";
+import { setVotes } from "./features/votes/votesSlice";
 
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     getCategories();
+
+    let user;
+    if ((user = getUser())) {
+      getVotes(user.sub);
+    }
   }, []);
 
   function getCategories() {
@@ -20,6 +27,16 @@ function App() {
       .then((data) => {
         console.log(data);
         dispatch(setCategories(data));
+      })
+      .catch((error) => console.error(error));
+  }
+
+  function getVotes(sub) {
+    fetch(`/votes/${sub}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        dispatch(setVotes(data));
       })
       .catch((error) => console.error(error));
   }

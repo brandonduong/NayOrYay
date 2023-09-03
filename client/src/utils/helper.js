@@ -42,5 +42,5 @@ export const parseJwt = (token) => {
 };
 
 export function getUser() {
-  return parseJwt(getCookie("id_token"));
+  return parseJwt(getCookie("id_token")) || false;
 }
