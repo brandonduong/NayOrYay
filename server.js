@@ -151,8 +151,8 @@ app.post("/vote", async (req, res) => {
     try {
       // Check if user didn't already vote for this question
       const voteQ = {
-        text: "SELECT * FROM votes WHERE sub=$1",
-        values: [payload.sub],
+        text: "SELECT * FROM votes WHERE sub=$1 AND questionid=$2",
+        values: [payload.sub, id],
       };
       const votes = await client.query(voteQ);
       if (votes.rows.length === 0) {
@@ -170,7 +170,6 @@ app.post("/vote", async (req, res) => {
         };
 
         const query = await client.query(q);
-        console.log(query);
 
         // Check if id is valid
         if (query.rowCount === 1) {
