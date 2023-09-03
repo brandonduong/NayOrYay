@@ -13,9 +13,9 @@ export function getCookie(cname) {
   return "";
 }
 
-export function login() {
+export function login(redirect) {
   window.location.href = `
-  https://warmtake.auth.us-east-1.amazoncognito.com/authorize?response_type=token&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=http://localhost:3000/
+  https://warmtake.auth.us-east-1.amazoncognito.com/authorize?response_type=token&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${redirect}
 `;
 }
 

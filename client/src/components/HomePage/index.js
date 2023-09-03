@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { isLoggedIn, login, logout } from "../../utils/helper";
 import CustomButton from "../CustomButton";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import Logo from "../Logo";
 export default function HomePage() {
   const navigate = useNavigate();
   const categories = useSelector((state) => state.categories.value);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const url = window.location;
@@ -22,6 +23,7 @@ export default function HomePage() {
       document.cookie = "access_token=" + access_token;
       window.location.replace("/");
     }
+    setLoading(false);
   }, []);
 
   function getFromURL(hashed, variable) {
@@ -55,39 +57,49 @@ export default function HomePage() {
         title="Nay or Yay"
         subtitle="Voice your opinion to a new question every day."
       >
-        <Stack
-          direction={{ xs: "column", sm: "row" }}
-          spacing={2}
-          alignItems={"center"}
-          marginBottom={3}
-        >
-          <CustomButton
-            variant={"outlined"}
-            color={"black"}
-            onClick={() => {
-              navigate(`/categories`);
-            }}
+        {!loading && (
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={2}
+            alignItems={"center"}
+            marginBottom={3}
           >
-            Categories
-          </CustomButton>
+            <CustomButton
+              variant={"outlined"}
+              color={"black"}
+              onClick={() => {
+                navigate(`/categories`);
+              }}
+            >
+              Categories
+            </CustomButton>
 
-          {!isLoggedIn() ? (
-            <CustomButton variant={"outlined"} color={"black"} onClick={login}>
-              Login
+            {!isLoggedIn() ? (
+              <CustomButton
+                variant={"outlined"}
+                color={"black"}
+                onClick={() => login("http://localhost:3000/")}
+              >
+                Login
+              </CustomButton>
+            ) : (
+              <CustomButton
+                variant={"outlined"}
+                color={"black"}
+                onClick={logout}
+              >
+                Logout
+              </CustomButton>
+            )}
+            <CustomButton
+              variant={"contained"}
+              color={"black"}
+              onClick={() => navigate(`/daily/${dailyNum}`)}
+            >
+              Yay
             </CustomButton>
-          ) : (
-            <CustomButton variant={"outlined"} color={"black"} onClick={logout}>
-              Logout
-            </CustomButton>
-          )}
-          <CustomButton
-            variant={"contained"}
-            color={"black"}
-            onClick={() => navigate(`/daily/${dailyNum}`)}
-          >
-            Yay
-          </CustomButton>
-        </Stack>
+          </Stack>
+        )}
         <Typography
           textAlign={"center"}
           variant="body1"

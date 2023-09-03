@@ -11,7 +11,7 @@ import Layout from "../Layout";
 import CustomButton from "../CustomButton";
 import { useDispatch, useSelector } from "react-redux";
 import { setVotes } from "../../features/votes/votesSlice";
-import { getUser } from "../../utils/helper";
+import { getUser, login } from "../../utils/helper";
 import { setQuestions } from "../../features/questions/questionsSlice";
 
 export default function QuestionPage() {
@@ -75,15 +75,11 @@ export default function QuestionPage() {
     return votes.filter((vote) => vote.questionid === question.id).length !== 0;
   }
 
-  function handleNay() {
+  function handleAy(vote) {
     if (getUser()) {
-      voteQuestion(question.id, "nay");
-    }
-  }
-
-  function handleYay() {
-    if (getUser()) {
-      voteQuestion(question.id, "yay");
+      voteQuestion(question.id, vote);
+    } else {
+      login(`http://localhost:3000/`);
     }
   }
 
@@ -109,14 +105,14 @@ export default function QuestionPage() {
               <CustomButton
                 variant={"outlined"}
                 color={"black"}
-                onClick={handleNay}
+                onClick={() => handleAy("nay")}
               >
                 Nay
               </CustomButton>
               <CustomButton
                 variant={"contained"}
                 color={"black"}
-                onClick={handleYay}
+                onClick={() => handleAy("yay")}
               >
                 Yay
               </CustomButton>
