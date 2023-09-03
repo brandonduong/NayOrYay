@@ -1,6 +1,8 @@
 import {
   Button,
   CircularProgress,
+  Divider,
+  LinearProgress,
   Stack,
   Typography,
   capitalize,
@@ -13,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setVotes } from "../../features/votes/votesSlice";
 import { getUser, login } from "../../utils/helper";
 import { setQuestions } from "../../features/questions/questionsSlice";
+import YayCounter from "./YayCounter";
 
 export default function QuestionPage() {
   const { category, id } = useParams();
@@ -65,6 +68,14 @@ export default function QuestionPage() {
         const newVote = { sub: getUser().sub, vote, questionid: id };
         if (!voted()) {
           dispatch(setVotes([...votes, newVote]));
+          // Increase counter by 1 since counts outdated
+          setQuestion({ ...question, [vote]: question[vote] + 1 });
+          const newQuestions = questions.filter((q) => q.id !== question.id);
+          const newQuestion = {
+            ...questions.filter((q) => q.id === question.id)[0],
+            [vote]: question[vote] + 1,
+          };
+          dispatch(setQuestions([...newQuestions, newQuestion]));
         }
         setVoting(false);
       })
@@ -100,23 +111,45 @@ export default function QuestionPage() {
             Asked by: {question.author}
           </Typography>
 
-          {!voting && (fetched || !getUser()) && !voted() && (
-            <Stack direction={"row"} spacing={2}>
-              <CustomButton
-                variant={"outlined"}
-                color={"black"}
-                onClick={() => handleAy("nay")}
-              >
-                Nay
-              </CustomButton>
-              <CustomButton
-                variant={"contained"}
-                color={"black"}
-                onClick={() => handleAy("yay")}
-              >
-                Yay
-              </CustomButton>
-            </Stack>
+          {!voting && (fetched || !getUser()) && (
+            <>
+              {!voted() ? (
+                <Stack direction={"row"} spacing={2} marginBottom={"2rem"}>
+                  <CustomButton
+                    variant={"outlined"}
+                    color={"black"}
+                    onClick={() => handleAy("nay")}
+                  >
+                    Nay
+                  </CustomButton>
+                  <CustomButton
+                    variant={"contained"}
+                    color={"black"}
+                    onClick={() => handleAy("yay")}
+                  >
+                    Yay
+                  </CustomButton>
+                </Stack>
+              ) : (
+                <>
+                  {" "}
+                  <Stack
+                    direction={"row"}
+                    spacing={2}
+                    marginBottom={"2rem"}
+                    justifyContent={"space-evenly"}
+                  >
+                    <YayCounter vote={"nay"} count={question.nay} />
+                    <YayCounter vote={"yay"} count={question.yay} />
+                  </Stack>
+                  <LinearProgress
+                    variant="determinate"
+                    value={(question.nay / (question.nay + question.yay)) * 100}
+                    color="inherit"
+                  />
+                </>
+              )}
+            </>
           )}
         </>
       ) : (
@@ -124,6 +157,7 @@ export default function QuestionPage() {
           <CircularProgress color="inherit" />
         </Typography>
       )}
+      <Divider />
     </Layout>
   );
 }
