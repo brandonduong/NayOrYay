@@ -41,8 +41,8 @@ export default function QuestionPage() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setQuestion(data);
-        const newQuestion = { ...data };
+        setQuestion(data.row);
+        const newQuestion = { ...data.row };
         dispatch(setQuestions({ ...questions, [category]: [newQuestion] }));
         setLoading(false);
       })

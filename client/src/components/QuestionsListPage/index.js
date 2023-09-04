@@ -31,7 +31,7 @@ export default function QuestionsListPage() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        dispatch(setQuestions({ ...questions, [category]: data }));
+        dispatch(setQuestions({ ...questions, [category]: data.rows }));
         setLoading(false);
       })
       .catch((error) => console.error(error));
@@ -55,7 +55,7 @@ export default function QuestionsListPage() {
             marginBottom={2}
           >
             {questions[category].map((q, index) => (
-              <Grid item>
+              <Grid item key={`${q.id}`}>
                 <QuestionsListItem question={q} index={index} />
               </Grid>
             ))}

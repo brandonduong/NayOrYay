@@ -128,7 +128,9 @@ app.get("/categories", /*#__PURE__*/function () {
         case 8:
           query = _context.sent;
           console.log(query.rows);
-          res.status(200).json(query.rows);
+          res.status(200).json({
+            rows: query.rows
+          });
           _context.next = 17;
           break;
         case 13:
@@ -176,7 +178,9 @@ app.get("/questions/:category", /*#__PURE__*/function () {
         case 9:
           query = _context2.sent;
           console.log(query.rows);
-          res.status(200).json(query.rows);
+          res.status(200).json({
+            rows: query.rows
+          });
           _context2.next = 18;
           break;
         case 14:
@@ -224,7 +228,9 @@ app.get("/question/:category/:offset", /*#__PURE__*/function () {
         case 9:
           query = _context3.sent;
           console.log(query.rows[0]);
-          res.status(200).json(query.rows[0]);
+          res.status(200).json({
+            row: query.rows[0]
+          });
           _context3.next = 18;
           break;
         case 14:
@@ -272,7 +278,9 @@ app.get("/votes/:sub", /*#__PURE__*/function () {
         case 9:
           query = _context4.sent;
           console.log(query.rows);
-          res.status(200).json(query.rows);
+          res.status(200).json({
+            rows: query.rows
+          });
           _context4.next = 18;
           break;
         case 14:

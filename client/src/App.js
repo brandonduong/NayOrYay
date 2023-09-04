@@ -43,7 +43,7 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        dispatch(setCategories(data));
+        dispatch(setCategories(data.rows));
       })
       .catch((error) => console.error(error));
   }
@@ -54,7 +54,7 @@ function App() {
       .then((data) => {
         console.log(data);
         dispatch(setFetched(true));
-        dispatch(setVotes(data));
+        dispatch(setVotes(data.rows));
       })
       .catch((error) => console.error(error));
   }
