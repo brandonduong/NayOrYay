@@ -79,7 +79,7 @@ app.get("/categories", async (req, res) => {
     };
     const query = await client.query(q);
     console.log(query.rows);
-    res.status(200).json({ rows: query.rows });
+    res.json({ rows: query.rows });
   } catch (err) {
     console.error("Error retrieving category: ", err);
     res.status(500).json({ message: "Error retrieving category" });
@@ -100,7 +100,7 @@ app.get("/questions/:category", async (req, res) => {
     };
     const query = await client.query(q);
     console.log(query.rows);
-    res.status(200).json({ rows: query.rows });
+    res.json({ rows: query.rows });
   } catch (err) {
     console.error("Error retrieving questions: ", err);
     res.status(500).json({ message: "Error retrieving questions" });
@@ -121,7 +121,7 @@ app.get("/question/:category/:offset", async (req, res) => {
     };
     const query = await client.query(q);
     console.log(query.rows[0]);
-    res.status(200).json({ row: query.rows[0] });
+    res.json({ row: query.rows[0] });
   } catch (err) {
     console.error("Error retrieving question: ", err);
     res.status(500).json({ message: "Error retrieving question" });
@@ -142,7 +142,7 @@ app.get("/votes/:sub", async (req, res) => {
     };
     const query = await client.query(q);
     console.log(query.rows);
-    res.status(200).json({ rows: query.rows });
+    res.json({ rows: query.rows });
   } catch (err) {
     console.error("Error retrieving votes: ", err);
     res.status(500).json({ message: "Error retrieving votes" });
@@ -193,7 +193,7 @@ app.post("/vote", async (req, res) => {
           await client.query(voteQ);
         }
 
-        res.status(200).json({ message: "Voted!" });
+        res.json({ message: "Voted!" });
       } else {
         res.status(200).json({ message: "Have already voted" });
       }

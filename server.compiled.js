@@ -128,7 +128,7 @@ app.get("/categories", /*#__PURE__*/function () {
         case 8:
           query = _context.sent;
           console.log(query.rows);
-          res.status(200).json({
+          res.json({
             rows: query.rows
           });
           _context.next = 17;
@@ -178,7 +178,7 @@ app.get("/questions/:category", /*#__PURE__*/function () {
         case 9:
           query = _context2.sent;
           console.log(query.rows);
-          res.status(200).json({
+          res.json({
             rows: query.rows
           });
           _context2.next = 18;
@@ -228,7 +228,7 @@ app.get("/question/:category/:offset", /*#__PURE__*/function () {
         case 9:
           query = _context3.sent;
           console.log(query.rows[0]);
-          res.status(200).json({
+          res.json({
             row: query.rows[0]
           });
           _context3.next = 18;
@@ -278,7 +278,7 @@ app.get("/votes/:sub", /*#__PURE__*/function () {
         case 9:
           query = _context4.sent;
           console.log(query.rows);
-          res.status(200).json({
+          res.json({
             rows: query.rows
           });
           _context4.next = 18;
@@ -368,7 +368,7 @@ app.post("/vote", /*#__PURE__*/function () {
           _context5.next = 25;
           return client.query(_voteQ);
         case 25:
-          res.status(200).json({
+          res.json({
             message: "Voted!"
           });
           _context5.next = 29;
