@@ -69,7 +69,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Box
           sx={{
-            backgroundColor: "#e3e3e1",
+            backgroundColor: "#edeff1",
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",
@@ -81,7 +81,8 @@ function App() {
               display: "flex",
               flexDirection: "column",
               height: "100%",
-              justifyContent: "center",
+
+              backgroundColor: "#edeff1",
             }}
           >
             <Routes>

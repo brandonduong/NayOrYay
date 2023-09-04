@@ -1,27 +1,39 @@
-import { Card, CardActionArea, CardContent, Typography } from "@mui/material";
+import { Stack, Typography, capitalize } from "@mui/material";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import CustomCard from "../CustomCard";
 
 export default function QuestionsListItem({ question, index }) {
   const navigate = useNavigate();
+  const votes = useSelector((state) => state.votes.value);
+
+  const info = votes.find((v) => v.questionid === question.id);
+  const vote = info ? info.vote : "N/A";
+
   return (
     <>
-      <Card
-        sx={{
-          border: "1px solid black",
-          backgroundColor: "#e3e3e1",
-        }}
-        variant="outlined"
+      <CustomCard
+        onClick={() => navigate(`/${question.category}/${index + 1}`)}
       >
-        <CardActionArea
-          onClick={() => navigate(`/${question.category}/${index + 1}`)}
+        <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
         >
-          <CardContent>
+          <div>
             <Typography gutterBottom variant="h5" component="div">
+              {capitalize(question.category)} No. {index + 1}
+            </Typography>
+
+            <Typography gutterBottom variant="body2" color="text.secondary">
               {question.text}
             </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
+          </div>
+          <Typography gutterBottom variant="h6">
+            {capitalize(vote)}
+          </Typography>
+        </Stack>
+      </CustomCard>
     </>
   );
 }

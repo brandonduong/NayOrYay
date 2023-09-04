@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import Layout from "../Layout";
 import { useDispatch, useSelector } from "react-redux";
-import { capitalize } from "@mui/material";
+import { Grid, Stack, capitalize } from "@mui/material";
 import { useEffect, useState } from "react";
 import { setQuestions } from "../../features/questions/questionsSlice";
 import QuestionsListItem from "./QuestionsListItem";
@@ -45,11 +45,22 @@ export default function QuestionsListPage() {
         header
         backPath={"/categories"}
       >
-        {info &&
-          !loading &&
-          questions[category].map((q, index) => (
-            <QuestionsListItem question={q} index={index} />
-          ))}
+        {info && !loading && (
+          <Grid
+            container
+            direction={"column"}
+            wrap="nowrap"
+            sx={{ overflowY: "auto" }}
+            spacing={2}
+            marginBottom={2}
+          >
+            {questions[category].map((q, index) => (
+              <Grid item>
+                <QuestionsListItem question={q} index={index} />
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Layout>
     </>
   );

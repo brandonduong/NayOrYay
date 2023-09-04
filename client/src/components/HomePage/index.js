@@ -49,76 +49,80 @@ export default function HomePage() {
           display: "flex",
           justifyContent: "center",
           marginBottom: "0.75rem",
+          flexDirection: "column",
+          alignItems: "center",
+          height: "100%",
         }}
       >
         <Logo width="80px" height="80px" />
-      </div>
-      <Layout
-        title="Nay or Yay"
-        subtitle="Voice your opinion to a new question every day."
-      >
-        {!loading && (
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            spacing={2}
-            alignItems={"center"}
-            marginBottom={3}
-          >
-            <CustomButton
-              variant={"outlined"}
-              color={"black"}
-              onClick={() => {
-                navigate(`/categories`);
-              }}
-            >
-              Categories
-            </CustomButton>
 
-            {!isLoggedIn() ? (
-              <CustomButton
-                variant={"outlined"}
-                color={"black"}
-                onClick={() => login("http://localhost:3000/")}
-              >
-                Login
-              </CustomButton>
-            ) : (
-              <CustomButton
-                variant={"outlined"}
-                color={"black"}
-                onClick={logout}
-              >
-                Logout
-              </CustomButton>
-            )}
-            <CustomButton
-              variant={"contained"}
-              color={"black"}
-              onClick={() => navigate(`/daily/${dailyNum}`)}
-            >
-              Yay
-            </CustomButton>
-          </Stack>
-        )}
-        <Typography
-          textAlign={"center"}
-          variant="body1"
-          fontWeight={700}
-          lineHeight={1.25}
+        <Layout
+          title="Nay or Yay"
+          subtitle="Voice your opinion to a new question every day."
         >
-          {new Date().toLocaleDateString(undefined, {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </Typography>
-        <Typography textAlign={"center"} variant="body1" lineHeight={1.25}>
-          No. {dailyNum}
-        </Typography>
-        <Typography textAlign={"center"} variant="body1" lineHeight={1.25}>
-          Edited by Brandon Duong
-        </Typography>
-      </Layout>
+          {!loading && (
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={2}
+              alignItems={"center"}
+              marginBottom={3}
+            >
+              <CustomButton
+                variant={"outlined"}
+                color={"black"}
+                onClick={() => {
+                  navigate(`/categories`);
+                }}
+              >
+                Categories
+              </CustomButton>
+
+              {!isLoggedIn() ? (
+                <CustomButton
+                  variant={"outlined"}
+                  color={"black"}
+                  onClick={() => login("http://localhost:3000/")}
+                >
+                  Login
+                </CustomButton>
+              ) : (
+                <CustomButton
+                  variant={"outlined"}
+                  color={"black"}
+                  onClick={logout}
+                >
+                  Logout
+                </CustomButton>
+              )}
+              <CustomButton
+                variant={"contained"}
+                color={"black"}
+                onClick={() => navigate(`/daily/${dailyNum}`)}
+              >
+                Yay
+              </CustomButton>
+            </Stack>
+          )}
+          <Typography
+            textAlign={"center"}
+            variant="body1"
+            fontWeight={700}
+            lineHeight={1.25}
+          >
+            {new Date().toLocaleDateString(undefined, {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </Typography>
+          <Typography textAlign={"center"} variant="body1" lineHeight={1.25}>
+            No. {dailyNum}
+          </Typography>
+          <Typography textAlign={"center"} variant="body1" lineHeight={1.25}>
+            Edited by Brandon Duong
+          </Typography>
+        </Layout>
+      </div>
     </>
   );
 }
