@@ -81,12 +81,17 @@ app.get("/categories", async (req, res) => {
   }
 });
 
-app.get("/questions", async (req, res) => {
+app.get("/questions/:category", async (req, res) => {
   const client = await newClient();
   try {
-    console.log("fetching questions");
+    const { category } = req.params;
+    console.log("fetching questions: ", category);
 
-    const query = await client.query("SELECT * FROM questions");
+    const q = {
+      text: "SELECT * FROM questions WHERE category=$1 ORDER BY ts",
+      values: [category],
+    };
+    const query = await client.query(q);
     console.log(query.rows);
     res.send(query.rows);
   } catch (err) {

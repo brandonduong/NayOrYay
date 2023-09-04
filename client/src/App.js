@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { setCategories } from "./features/categories/categoriesSlice";
 import { getUser } from "./utils/helper";
 import { setFetched, setVotes } from "./features/votes/votesSlice";
+import QuestionsListPage from "./components/QuestionsListPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -86,6 +87,7 @@ function App() {
             <Routes>
               <Route index element={<HomePage />} />
               <Route path="categories" element={<CategoriesPage />} />
+              <Route path=":category" element={<QuestionsListPage />} />
               <Route path=":category/:id" element={<QuestionPage />} />
             </Routes>
           </Container>

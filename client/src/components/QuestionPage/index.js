@@ -22,9 +22,7 @@ export default function QuestionPage() {
   const questions = useSelector((state) => state.questions.value);
 
   const [question, setQuestion] = useState(
-    questions.find(
-      (q) => q.categoryId === id && !q.category.localeCompare(category)
-    ) || false
+    questions[category] ? questions[category][id - 1] : false
   );
   const [loading, setLoading] = useState(!question);
   const [voting, setVoting] = useState(false);
@@ -44,8 +42,8 @@ export default function QuestionPage() {
       .then((data) => {
         console.log(data);
         setQuestion(data);
-        const newQuestion = { ...data, categoryId: id };
-        dispatch(setQuestions([...questions, newQuestion]));
+        const newQuestion = { ...data };
+        dispatch(setQuestions({ ...questions, [category]: [newQuestion] }));
         setLoading(false);
       })
       .catch((error) => console.error(error));
@@ -70,12 +68,19 @@ export default function QuestionPage() {
           dispatch(setVotes([...votes, newVote]));
           // Increase counter by 1 since counts outdated
           setQuestion({ ...question, [vote]: question[vote] + 1 });
-          const newQuestions = questions.filter((q) => q.id !== question.id);
+          const newQuestions = questions[category].filter(
+            (q) => q.id !== question.id
+          );
           const newQuestion = {
-            ...questions.filter((q) => q.id === question.id)[0],
+            ...questions[category].filter((q) => q.id === question.id)[0],
             [vote]: question[vote] + 1,
           };
-          dispatch(setQuestions([...newQuestions, newQuestion]));
+          dispatch(
+            setQuestions({
+              ...questions,
+              [category]: [...newQuestions, newQuestion],
+            })
+          );
         }
         setVoting(false);
       })
@@ -97,8 +102,9 @@ export default function QuestionPage() {
   return (
     <Layout
       title={`${capitalize(category)} - No. ${id}`}
-      subtitle={question.text}
-      home
+      subtitle={question && question.text}
+      header
+      backPath={`/${category}`}
     >
       {!loading ? (
         <>
@@ -144,7 +150,7 @@ export default function QuestionPage() {
                   </Stack>
                   <LinearProgress
                     variant="determinate"
-                    value={(question.nay / (question.nay + question.yay)) * 100}
+                    value={(question.yay / (question.nay + question.yay)) * 100}
                     color="inherit"
                   />
                 </>

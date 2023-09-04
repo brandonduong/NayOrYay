@@ -1,46 +1,61 @@
-import { Divider, Stack, Typography } from "@mui/material";
+import { Divider, Grid, Typography } from "@mui/material";
 import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDown";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../utils/helper";
 import Logo from "./Logo";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-export default function Layout({ home, title, subtitle, children }) {
+export default function Layout({
+  header,
+  backPath,
+  title,
+  subtitle,
+  children,
+}) {
   const navigate = useNavigate();
   return (
     <>
-      {home && (
+      {header && (
         <>
-          <Stack
-            direction={"row"}
-            justifyContent={"space-between"}
-            alignItems={"flex-end"}
-          >
-            <div
-              style={{
-                display: "flex",
-                marginTop: "1rem",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                variant="h6"
-                textAlign={"center"}
-                sx={{
-                  fontFamily: "Roboto Condensed",
-                  cursor: "pointer",
-                  paddingRight: "0.25rem",
+          <Grid container direction={"row"} alignItems={"flex-end"}>
+            <Grid item xs={4}>
+              <div
+                style={{
+                  display: "flex",
+                  marginTop: "1rem",
+                  alignItems: "center",
                 }}
-                onClick={() => navigate("/")}
               >
-                Nay or Yay
-              </Typography>
+                <Typography
+                  variant="h6"
+                  textAlign={"center"}
+                  sx={{
+                    fontFamily: "Roboto Condensed",
+                    cursor: "pointer",
+                    paddingRight: "0.25rem",
+                  }}
+                  onClick={() => navigate("/")}
+                >
+                  Nay or Yay
+                </Typography>
 
-              <Logo onClick={() => navigate("/")} cursor="pointer" />
-            </div>
-            <Typography variant="body1" fontWeight={700}>
-              {getUser()["cognito:username"]}
-            </Typography>
-          </Stack>
+                <Logo onClick={() => navigate("/")} cursor="pointer" />
+              </div>
+            </Grid>
+            <Grid item xs={4} textAlign={"center"}>
+              <Typography variant="body1" fontWeight={700}>
+                {getUser()["cognito:username"]}
+              </Typography>
+            </Grid>
+            <Grid item xs={4} textAlign={"end"}>
+              <ArrowBackIcon
+                onClick={() => navigate(backPath)}
+                sx={{
+                  cursor: "pointer",
+                }}
+              />
+            </Grid>
+          </Grid>
           <Divider sx={{ marginBottom: "2rem" }} />
         </>
       )}

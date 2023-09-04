@@ -8,7 +8,12 @@ export default function CategoriesPage() {
 
   return (
     <>
-      <Layout title={"Categories"} subtitle={"Nay or Yay every day!"} home>
+      <Layout
+        title={"Categories"}
+        subtitle={"Nay or Yay every day!"}
+        header
+        backPath={"/"}
+      >
         <Grid container spacing={2}>
           {categories.map(({ category, count, description }) => (
             <Grid item xs={12} sm={6} key={`${category}`}>

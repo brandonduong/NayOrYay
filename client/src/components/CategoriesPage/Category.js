@@ -5,7 +5,7 @@ import {
   Typography,
   capitalize,
 } from "@mui/material";
-import Layout from "../Layout";
+
 import { useNavigate } from "react-router-dom";
 
 export default function Category({ category, count, description }) {
@@ -19,7 +19,7 @@ export default function Category({ category, count, description }) {
       }}
       variant="outlined"
     >
-      <CardActionArea onClick={() => navigate(`/${category}/${count}`)}>
+      <CardActionArea onClick={() => navigate(`/${category}`)}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {capitalize(category)}
