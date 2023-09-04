@@ -158,10 +158,14 @@ app.get("/api/categories", /*#__PURE__*/function () {
 }());
 app.get("/flower2", /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var data, q;
+    var data, client, q;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
+          _context2.next = 2;
+          return newClient();
+        case 2:
+          client = _context2.sent;
           try {
             q = {
               text: "SELECT * FROM categories ORDER BY id"
@@ -179,7 +183,7 @@ app.get("/flower2", /*#__PURE__*/function () {
             };
           } finally {}
           res.json(data);
-        case 2:
+        case 5:
         case "end":
           return _context2.stop();
       }

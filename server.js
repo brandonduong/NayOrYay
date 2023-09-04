@@ -90,6 +90,7 @@ app.get("/api/categories", async (req, res) => {
 
 app.get("/flower2", async (req, res) => {
   let data;
+  const client = await newClient();
   try {
     const q = {
       text: "SELECT * FROM categories ORDER BY id",
