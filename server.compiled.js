@@ -158,48 +158,32 @@ app.get("/api/categories", /*#__PURE__*/function () {
 }());
 app.get("/flower2", /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var client, data, q, query;
+    var data, q;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          _context2.next = 2;
-          return newClient();
-        case 2:
-          client = _context2.sent;
-          _context2.prev = 3;
-          q = {
-            text: "SELECT * FROM categories ORDER BY id"
-          };
-          _context2.next = 7;
-          return client.query(q);
-        case 7:
-          query = _context2.sent;
-          console.log(query.rows);
-          data = {
-            rows: query.rows
-          };
-          _context2.next = 16;
-          break;
-        case 12:
-          _context2.prev = 12;
-          _context2.t0 = _context2["catch"](3);
-          console.error("Error retrieving category: ", _context2.t0);
-          data = {
-            message: "Error retrieving category"
-          };
-        case 16:
-          _context2.prev = 16;
-          _context2.next = 19;
-          return client.end();
-        case 19:
-          return _context2.finish(16);
-        case 20:
+          try {
+            q = {
+              text: "SELECT * FROM categories ORDER BY id"
+            };
+            console.log("test");
+            data = {
+              rows: [{
+                test: "test"
+              }]
+            };
+          } catch (err) {
+            console.error("Error retrieving category: ", err);
+            data = {
+              message: "Error retrieving category"
+            };
+          } finally {}
           res.json(data);
-        case 21:
+        case 2:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[3, 12, 16, 20]]);
+    }, _callee2);
   }));
   return function (_x4, _x5) {
     return _ref2.apply(this, arguments);
