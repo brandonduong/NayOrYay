@@ -90,19 +90,23 @@ app.get("/api/categories", async (req, res) => {
 
 app.get("/flower2", async (req, res) => {
   const client = await newClient();
+  let data, status;
   try {
     const q = {
       text: "SELECT * FROM categories ORDER BY id",
     };
     const query = await client.query(q);
     console.log(query.rows);
-    res.json({ name: "Dandelion", colour: "Blue-ish" });
+    data = { rows: query.rows };
+    status = 200;
   } catch (err) {
     console.error("Error retrieving category: ", err);
-    res.json({ message: "Error retrieving category" });
+    status = 500;
+    data = { message: "Error retrieving category" };
   } finally {
     await client.end();
   }
+  res.status(status).json(data);
 });
 
 app.get("/api/questions/:category", async (req, res) => {
