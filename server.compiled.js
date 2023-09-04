@@ -31,10 +31,10 @@ function newClient() {
   return _newClient.apply(this, arguments);
 }
 function _newClient() {
-  _newClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+  _newClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
     var client;
-    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-      while (1) switch (_context6.prev = _context6.next) {
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      while (1) switch (_context7.prev = _context7.next) {
         case 0:
           client = new _pg.Client({
             connectionString: connUrl,
@@ -43,15 +43,15 @@ function _newClient() {
               rejectUnauthorized: false
             }
           });
-          _context6.next = 3;
+          _context7.next = 3;
           return client.connect();
         case 3:
-          return _context6.abrupt("return", client);
+          return _context7.abrupt("return", client);
         case 4:
         case "end":
-          return _context6.stop();
+          return _context7.stop();
       }
-    }, _callee6);
+    }, _callee7);
   }));
   return _newClient.apply(this, arguments);
 }
@@ -75,10 +75,10 @@ function verifyToken(_x) {
   return _verifyToken.apply(this, arguments);
 }
 function _verifyToken() {
-  _verifyToken = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(id_token) {
+  _verifyToken = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(id_token) {
     var verifier, payload;
-    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-      while (1) switch (_context7.prev = _context7.next) {
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) switch (_context8.prev = _context8.next) {
         case 0:
           // Verifier that expects valid access tokens:
           verifier = _awsJwtVerify.CognitoJwtVerifier.create({
@@ -86,25 +86,25 @@ function _verifyToken() {
             tokenUse: "id",
             clientId: process.env.CLIENT_ID
           });
-          _context7.prev = 1;
-          _context7.next = 4;
+          _context8.prev = 1;
+          _context8.next = 4;
           return verifier.verify(id_token);
         case 4:
-          payload = _context7.sent;
+          payload = _context8.sent;
           console.log("Token is valid. Payload:", payload);
-          _context7.next = 11;
+          _context8.next = 11;
           break;
         case 8:
-          _context7.prev = 8;
-          _context7.t0 = _context7["catch"](1);
+          _context8.prev = 8;
+          _context8.t0 = _context8["catch"](1);
           console.log("Token not valid!");
         case 11:
-          return _context7.abrupt("return", payload);
+          return _context8.abrupt("return", payload);
         case 12:
         case "end":
-          return _context7.stop();
+          return _context8.stop();
       }
-    }, _callee7, null, [[1, 8]]);
+    }, _callee8, null, [[1, 8]]);
   }));
   return _verifyToken.apply(this, arguments);
 }
@@ -156,59 +156,28 @@ app.get("/api/categories", /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }());
-app.get("/api/questions/:category", /*#__PURE__*/function () {
+app.get("/flower2", /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var client, category, q, query;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          _context2.next = 2;
-          return newClient();
-        case 2:
-          client = _context2.sent;
-          _context2.prev = 3;
-          category = req.params.category;
-          console.log("fetching questions: ", category);
-          q = {
-            text: "SELECT * FROM questions WHERE category=$1 ORDER BY ts",
-            values: [category]
-          };
-          _context2.next = 9;
-          return client.query(q);
-        case 9:
-          query = _context2.sent;
-          console.log(query.rows);
           res.json({
-            rows: query.rows
+            name: "Dandelion",
+            colour: "Blue-ish"
           });
-          _context2.next = 18;
-          break;
-        case 14:
-          _context2.prev = 14;
-          _context2.t0 = _context2["catch"](3);
-          console.error("Error retrieving questions: ", _context2.t0);
-          res.status(500).json({
-            message: "Error retrieving questions"
-          });
-        case 18:
-          _context2.prev = 18;
-          _context2.next = 21;
-          return client.end();
-        case 21:
-          return _context2.finish(18);
-        case 22:
+        case 1:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[3, 14, 18, 22]]);
+    }, _callee2);
   }));
   return function (_x4, _x5) {
     return _ref2.apply(this, arguments);
   };
 }());
-app.get("/api/question/:category/:offset", /*#__PURE__*/function () {
+app.get("/api/questions/:category", /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var client, _req$params, offset, category, q, query;
+    var client, category, q, query;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
@@ -217,28 +186,28 @@ app.get("/api/question/:category/:offset", /*#__PURE__*/function () {
         case 2:
           client = _context3.sent;
           _context3.prev = 3;
-          _req$params = req.params, offset = _req$params.offset, category = _req$params.category;
-          console.log("fetching question: ", category, offset);
+          category = req.params.category;
+          console.log("fetching questions: ", category);
           q = {
-            text: "SELECT * FROM questions WHERE category=$1 ORDER BY ts OFFSET $2 LIMIT 1",
-            values: [category, offset - 1]
+            text: "SELECT * FROM questions WHERE category=$1 ORDER BY ts",
+            values: [category]
           };
           _context3.next = 9;
           return client.query(q);
         case 9:
           query = _context3.sent;
-          console.log(query.rows[0]);
+          console.log(query.rows);
           res.json({
-            row: query.rows[0]
+            rows: query.rows
           });
           _context3.next = 18;
           break;
         case 14:
           _context3.prev = 14;
           _context3.t0 = _context3["catch"](3);
-          console.error("Error retrieving question: ", _context3.t0);
+          console.error("Error retrieving questions: ", _context3.t0);
           res.status(500).json({
-            message: "Error retrieving question"
+            message: "Error retrieving questions"
           });
         case 18:
           _context3.prev = 18;
@@ -256,9 +225,9 @@ app.get("/api/question/:category/:offset", /*#__PURE__*/function () {
     return _ref3.apply(this, arguments);
   };
 }());
-app.get("/api/votes/:sub", /*#__PURE__*/function () {
+app.get("/api/question/:category/:offset", /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var client, sub, q, query;
+    var client, _req$params, offset, category, q, query;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
@@ -267,28 +236,28 @@ app.get("/api/votes/:sub", /*#__PURE__*/function () {
         case 2:
           client = _context4.sent;
           _context4.prev = 3;
-          sub = req.params.sub;
-          console.log("fetching votes for: ", sub);
+          _req$params = req.params, offset = _req$params.offset, category = _req$params.category;
+          console.log("fetching question: ", category, offset);
           q = {
-            text: "SELECT * FROM votes WHERE sub=$1",
-            values: [sub]
+            text: "SELECT * FROM questions WHERE category=$1 ORDER BY ts OFFSET $2 LIMIT 1",
+            values: [category, offset - 1]
           };
           _context4.next = 9;
           return client.query(q);
         case 9:
           query = _context4.sent;
-          console.log(query.rows);
+          console.log(query.rows[0]);
           res.json({
-            rows: query.rows
+            row: query.rows[0]
           });
           _context4.next = 18;
           break;
         case 14:
           _context4.prev = 14;
           _context4.t0 = _context4["catch"](3);
-          console.error("Error retrieving votes: ", _context4.t0);
+          console.error("Error retrieving question: ", _context4.t0);
           res.status(500).json({
-            message: "Error retrieving votes"
+            message: "Error retrieving question"
           });
         case 18:
           _context4.prev = 18;
@@ -306,9 +275,9 @@ app.get("/api/votes/:sub", /*#__PURE__*/function () {
     return _ref4.apply(this, arguments);
   };
 }());
-app.post("/api/vote", /*#__PURE__*/function () {
+app.get("/api/votes/:sub", /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var client, _req$body, id, vote, id_token, payload, voteQ, votes, text, q, query, _voteQ;
+    var client, sub, q, query;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
@@ -316,29 +285,79 @@ app.post("/api/vote", /*#__PURE__*/function () {
           return newClient();
         case 2:
           client = _context5.sent;
+          _context5.prev = 3;
+          sub = req.params.sub;
+          console.log("fetching votes for: ", sub);
+          q = {
+            text: "SELECT * FROM votes WHERE sub=$1",
+            values: [sub]
+          };
+          _context5.next = 9;
+          return client.query(q);
+        case 9:
+          query = _context5.sent;
+          console.log(query.rows);
+          res.json({
+            rows: query.rows
+          });
+          _context5.next = 18;
+          break;
+        case 14:
+          _context5.prev = 14;
+          _context5.t0 = _context5["catch"](3);
+          console.error("Error retrieving votes: ", _context5.t0);
+          res.status(500).json({
+            message: "Error retrieving votes"
+          });
+        case 18:
+          _context5.prev = 18;
+          _context5.next = 21;
+          return client.end();
+        case 21:
+          return _context5.finish(18);
+        case 22:
+        case "end":
+          return _context5.stop();
+      }
+    }, _callee5, null, [[3, 14, 18, 22]]);
+  }));
+  return function (_x10, _x11) {
+    return _ref5.apply(this, arguments);
+  };
+}());
+app.post("/api/vote", /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+    var client, _req$body, id, vote, id_token, payload, voteQ, votes, text, q, query, _voteQ;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.next = 2;
+          return newClient();
+        case 2:
+          client = _context6.sent;
           _req$body = req.body, id = _req$body.id, vote = _req$body.vote;
           console.log("voting question: ", id, vote);
           id_token = getCookie(req.headers.cookie, "id_token");
-          _context5.next = 8;
+          _context6.next = 8;
           return verifyToken(id_token);
         case 8:
-          payload = _context5.sent;
+          payload = _context6.sent;
           if (!(payload && (!vote.localeCompare("yay") || !vote.localeCompare("nay")))) {
-            _context5.next = 41;
+            _context6.next = 41;
             break;
           }
-          _context5.prev = 10;
+          _context6.prev = 10;
           // Check if user didn't already vote for this question
           voteQ = {
             text: "SELECT * FROM votes WHERE sub=$1 AND questionid=$2",
             values: [payload.sub, id]
           };
-          _context5.next = 14;
+          _context6.next = 14;
           return client.query(voteQ);
         case 14:
-          votes = _context5.sent;
+          votes = _context6.sent;
           if (!(votes.rows.length === 0)) {
-            _context5.next = 28;
+            _context6.next = 28;
             break;
           }
           // Update question counter
@@ -352,12 +371,12 @@ app.post("/api/vote", /*#__PURE__*/function () {
             text: text,
             values: [id]
           };
-          _context5.next = 20;
+          _context6.next = 20;
           return client.query(q);
         case 20:
-          query = _context5.sent;
+          query = _context6.sent;
           if (!(query.rowCount === 1)) {
-            _context5.next = 25;
+            _context6.next = 25;
             break;
           }
           // Add vote
@@ -365,36 +384,36 @@ app.post("/api/vote", /*#__PURE__*/function () {
             text: "INSERT INTO votes (sub, questionid, vote) VALUES ($1, $2, $3)",
             values: [payload.sub, id, vote]
           };
-          _context5.next = 25;
+          _context6.next = 25;
           return client.query(_voteQ);
         case 25:
           res.json({
             message: "Voted!"
           });
-          _context5.next = 29;
+          _context6.next = 29;
           break;
         case 28:
           res.status(200).json({
             message: "Have already voted"
           });
         case 29:
-          _context5.next = 35;
+          _context6.next = 35;
           break;
         case 31:
-          _context5.prev = 31;
-          _context5.t0 = _context5["catch"](10);
-          console.error("Error retrieving question: ", _context5.t0);
+          _context6.prev = 31;
+          _context6.t0 = _context6["catch"](10);
+          console.error("Error retrieving question: ", _context6.t0);
           res.status(500).json({
             message: "Error retrieving question"
           });
         case 35:
-          _context5.prev = 35;
-          _context5.next = 38;
+          _context6.prev = 35;
+          _context6.next = 38;
           return client.end();
         case 38:
-          return _context5.finish(35);
+          return _context6.finish(35);
         case 39:
-          _context5.next = 42;
+          _context6.next = 42;
           break;
         case 41:
           res.status(500).json({
@@ -402,12 +421,12 @@ app.post("/api/vote", /*#__PURE__*/function () {
           });
         case 42:
         case "end":
-          return _context5.stop();
+          return _context6.stop();
       }
-    }, _callee5, null, [[10, 31, 35, 39]]);
+    }, _callee6, null, [[10, 31, 35, 39]]);
   }));
-  return function (_x10, _x11) {
-    return _ref5.apply(this, arguments);
+  return function (_x12, _x13) {
+    return _ref6.apply(this, arguments);
   };
 }());
 app.listen(PORT, function () {

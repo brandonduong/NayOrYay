@@ -88,6 +88,13 @@ app.get("/api/categories", async (req, res) => {
   }
 });
 
+app.get("/flower2", async (req, res) => {
+  res.json({
+    name: "Dandelion",
+    colour: "Blue-ish",
+  });
+});
+
 app.get("/api/questions/:category", async (req, res) => {
   const client = await newClient();
   try {
