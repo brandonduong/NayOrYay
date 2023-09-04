@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "client", "build")));
 
 app.get("/", (req, res) => {
-  res.send("alive");
+  res.status(200).send("alive");
 });
 
 app.get("/flower", (req, res) => {
@@ -79,10 +79,10 @@ app.get("/categories", async (req, res) => {
     };
     const query = await client.query(q);
     console.log(query.rows);
-    res.send(query.rows);
+    res.status(200).json(query.rows);
   } catch (err) {
     console.error("Error retrieving category: ", err);
-    res.status(500).send({ message: "Error retrieving category" });
+    res.status(500).json({ message: "Error retrieving category" });
   } finally {
     await client.end();
   }
@@ -100,10 +100,10 @@ app.get("/questions/:category", async (req, res) => {
     };
     const query = await client.query(q);
     console.log(query.rows);
-    res.send(query.rows);
+    res.status(200).json(query.rows);
   } catch (err) {
     console.error("Error retrieving questions: ", err);
-    res.status(500).send({ message: "Error retrieving questions" });
+    res.status(500).json({ message: "Error retrieving questions" });
   } finally {
     await client.end();
   }
@@ -121,10 +121,10 @@ app.get("/question/:category/:offset", async (req, res) => {
     };
     const query = await client.query(q);
     console.log(query.rows[0]);
-    res.send(query.rows[0]);
+    res.status(200).json(query.rows[0]);
   } catch (err) {
     console.error("Error retrieving question: ", err);
-    res.status(500).send({ message: "Error retrieving question" });
+    res.status(500).json({ message: "Error retrieving question" });
   } finally {
     await client.end();
   }
@@ -142,10 +142,10 @@ app.get("/votes/:sub", async (req, res) => {
     };
     const query = await client.query(q);
     console.log(query.rows);
-    res.send(query.rows);
+    res.status(200).json(query.rows);
   } catch (err) {
     console.error("Error retrieving votes: ", err);
-    res.status(500).send({ message: "Error retrieving votes" });
+    res.status(500).json({ message: "Error retrieving votes" });
   } finally {
     await client.end();
   }
@@ -193,18 +193,18 @@ app.post("/vote", async (req, res) => {
           await client.query(voteQ);
         }
 
-        res.status(200).send({ message: "Voted!" });
+        res.status(200).json({ message: "Voted!" });
       } else {
-        res.status(500).send({ message: "Have already voted" });
+        res.status(200).json({ message: "Have already voted" });
       }
     } catch (err) {
       console.error("Error retrieving question: ", err);
-      res.status(500).send({ message: "Error retrieving question" });
+      res.status(500).json({ message: "Error retrieving question" });
     } finally {
       await client.end();
     }
   } else {
-    res.status(500).send({ message: "Invalid token or vote" });
+    res.status(500).json({ message: "Invalid token or vote" });
   }
 });
 
