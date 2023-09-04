@@ -158,18 +158,47 @@ app.get("/api/categories", /*#__PURE__*/function () {
 }());
 app.get("/flower2", /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
+    var client, q, query;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
+          _context2.next = 2;
+          return newClient();
+        case 2:
+          client = _context2.sent;
+          _context2.prev = 3;
+          q = {
+            text: "SELECT * FROM categories ORDER BY id"
+          };
+          _context2.next = 7;
+          return client.query(q);
+        case 7:
+          query = _context2.sent;
+          console.log(query.rows);
           res.json({
             name: "Dandelion",
             colour: "Blue-ish"
           });
-        case 1:
+          _context2.next = 16;
+          break;
+        case 12:
+          _context2.prev = 12;
+          _context2.t0 = _context2["catch"](3);
+          console.error("Error retrieving category: ", _context2.t0);
+          res.json({
+            message: "Error retrieving category"
+          });
+        case 16:
+          _context2.prev = 16;
+          _context2.next = 19;
+          return client.end();
+        case 19:
+          return _context2.finish(16);
+        case 20:
         case "end":
           return _context2.stop();
       }
-    }, _callee2);
+    }, _callee2, null, [[3, 12, 16, 20]]);
   }));
   return function (_x4, _x5) {
     return _ref2.apply(this, arguments);
