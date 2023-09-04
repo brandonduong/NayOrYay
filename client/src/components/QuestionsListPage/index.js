@@ -27,7 +27,7 @@ export default function QuestionsListPage() {
   }, []);
 
   function getQuestions() {
-    fetch(`/questions/${category}`)
+    fetch(`/api/questions/${category}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

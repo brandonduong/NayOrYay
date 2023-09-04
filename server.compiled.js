@@ -27,12 +27,6 @@ app.get("/flower", function (req, res) {
   });
 });
 var connUrl = "postgres://".concat(process.env.RDS_USERNAME, ":").concat(process.env.RDS_PASSWORD, "@").concat(process.env.RDS_HOSTNAME, ":").concat(process.env.RDS_PORT, "/").concat(process.env.RDS_DATABASE);
-app.get("/flower2", function (req, res) {
-  res.json({
-    name: "Dandelion",
-    colour: "Blue-ish"
-  });
-});
 function newClient() {
   return _newClient.apply(this, arguments);
 }
@@ -114,7 +108,7 @@ function _verifyToken() {
   }));
   return _verifyToken.apply(this, arguments);
 }
-app.get("/categories", /*#__PURE__*/function () {
+app.get("/api/categories", /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
     var client, q, query;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -162,7 +156,7 @@ app.get("/categories", /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }());
-app.get("/questions/:category", /*#__PURE__*/function () {
+app.get("/api/questions/:category", /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
     var client, category, q, query;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
@@ -212,7 +206,7 @@ app.get("/questions/:category", /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }());
-app.get("/question/:category/:offset", /*#__PURE__*/function () {
+app.get("/api/question/:category/:offset", /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
     var client, _req$params, offset, category, q, query;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
@@ -262,7 +256,7 @@ app.get("/question/:category/:offset", /*#__PURE__*/function () {
     return _ref3.apply(this, arguments);
   };
 }());
-app.get("/votes/:sub", /*#__PURE__*/function () {
+app.get("/api/votes/:sub", /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
     var client, sub, q, query;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
@@ -312,7 +306,7 @@ app.get("/votes/:sub", /*#__PURE__*/function () {
     return _ref4.apply(this, arguments);
   };
 }());
-app.post("/vote", /*#__PURE__*/function () {
+app.post("/api/vote", /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
     var client, _req$body, id, vote, id_token, payload, voteQ, votes, text, q, query, _voteQ;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {

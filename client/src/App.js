@@ -39,7 +39,7 @@ function App() {
   }
 
   function getCategories() {
-    fetch(`/categories`)
+    fetch(`/api/categories`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -49,7 +49,7 @@ function App() {
   }
 
   function getVotes(sub) {
-    fetch(`/votes/${sub}`)
+    fetch(`/api/votes/${sub}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

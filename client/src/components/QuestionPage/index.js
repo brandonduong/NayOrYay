@@ -37,7 +37,7 @@ export default function QuestionPage() {
   }, []);
 
   function getQuestion(id, category) {
-    fetch(`/question/${category}/${id}`)
+    fetch(`/api/question/${category}/${id}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -51,7 +51,7 @@ export default function QuestionPage() {
 
   function voteQuestion(id, vote) {
     setVoting(true);
-    fetch(`/vote`, {
+    fetch(`/api/vote`, {
       method: "POST",
       headers: {
         Accept: "application/json",

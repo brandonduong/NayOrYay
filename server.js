@@ -25,12 +25,6 @@ app.get("/flower", (req, res) => {
 });
 
 const connUrl = `postgres://${process.env.RDS_USERNAME}:${process.env.RDS_PASSWORD}@${process.env.RDS_HOSTNAME}:${process.env.RDS_PORT}/${process.env.RDS_DATABASE}`;
-app.get("/flower2", (req, res) => {
-  res.json({
-    name: "Dandelion",
-    colour: "Blue-ish",
-  });
-});
 async function newClient() {
   const client = new Client({
     connectionString: connUrl,
@@ -75,7 +69,7 @@ async function verifyToken(id_token) {
   return payload;
 }
 
-app.get("/categories", async (req, res) => {
+app.get("/api/categories", async (req, res) => {
   const client = await newClient();
   try {
     console.log("fetching categories: ");
@@ -94,7 +88,7 @@ app.get("/categories", async (req, res) => {
   }
 });
 
-app.get("/questions/:category", async (req, res) => {
+app.get("/api/questions/:category", async (req, res) => {
   const client = await newClient();
   try {
     const { category } = req.params;
@@ -115,7 +109,7 @@ app.get("/questions/:category", async (req, res) => {
   }
 });
 
-app.get("/question/:category/:offset", async (req, res) => {
+app.get("/api/question/:category/:offset", async (req, res) => {
   const client = await newClient();
   try {
     const { offset, category } = req.params;
@@ -136,7 +130,7 @@ app.get("/question/:category/:offset", async (req, res) => {
   }
 });
 
-app.get("/votes/:sub", async (req, res) => {
+app.get("/api/votes/:sub", async (req, res) => {
   const client = await newClient();
   try {
     const { sub } = req.params;
@@ -157,7 +151,7 @@ app.get("/votes/:sub", async (req, res) => {
   }
 });
 
-app.post("/vote", async (req, res) => {
+app.post("/api/vote", async (req, res) => {
   const client = await newClient();
   const { id, vote } = req.body;
   console.log("voting question: ", id, vote);
