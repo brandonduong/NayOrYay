@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(_express["default"]["static"](_path["default"].join(__dirname, "client", "build")));
 app.get("/", function (req, res) {
-  res.send("alive");
+  res.status(200).send("alive");
 });
 app.get("/flower", function (req, res) {
   res.json({
@@ -128,14 +128,14 @@ app.get("/categories", /*#__PURE__*/function () {
         case 8:
           query = _context.sent;
           console.log(query.rows);
-          res.send(query.rows);
+          res.status(200).json(query.rows);
           _context.next = 17;
           break;
         case 13:
           _context.prev = 13;
           _context.t0 = _context["catch"](3);
           console.error("Error retrieving category: ", _context.t0);
-          res.status(500).send({
+          res.status(500).json({
             message: "Error retrieving category"
           });
         case 17:
@@ -176,14 +176,14 @@ app.get("/questions/:category", /*#__PURE__*/function () {
         case 9:
           query = _context2.sent;
           console.log(query.rows);
-          res.send(query.rows);
+          res.status(200).json(query.rows);
           _context2.next = 18;
           break;
         case 14:
           _context2.prev = 14;
           _context2.t0 = _context2["catch"](3);
           console.error("Error retrieving questions: ", _context2.t0);
-          res.status(500).send({
+          res.status(500).json({
             message: "Error retrieving questions"
           });
         case 18:
@@ -224,14 +224,14 @@ app.get("/question/:category/:offset", /*#__PURE__*/function () {
         case 9:
           query = _context3.sent;
           console.log(query.rows[0]);
-          res.send(query.rows[0]);
+          res.status(200).json(query.rows[0]);
           _context3.next = 18;
           break;
         case 14:
           _context3.prev = 14;
           _context3.t0 = _context3["catch"](3);
           console.error("Error retrieving question: ", _context3.t0);
-          res.status(500).send({
+          res.status(500).json({
             message: "Error retrieving question"
           });
         case 18:
@@ -272,14 +272,14 @@ app.get("/votes/:sub", /*#__PURE__*/function () {
         case 9:
           query = _context4.sent;
           console.log(query.rows);
-          res.send(query.rows);
+          res.status(200).json(query.rows);
           _context4.next = 18;
           break;
         case 14:
           _context4.prev = 14;
           _context4.t0 = _context4["catch"](3);
           console.error("Error retrieving votes: ", _context4.t0);
-          res.status(500).send({
+          res.status(500).json({
             message: "Error retrieving votes"
           });
         case 18:
@@ -360,13 +360,13 @@ app.post("/vote", /*#__PURE__*/function () {
           _context5.next = 25;
           return client.query(_voteQ);
         case 25:
-          res.status(200).send({
+          res.status(200).json({
             message: "Voted!"
           });
           _context5.next = 29;
           break;
         case 28:
-          res.status(500).send({
+          res.status(200).json({
             message: "Have already voted"
           });
         case 29:
@@ -376,7 +376,7 @@ app.post("/vote", /*#__PURE__*/function () {
           _context5.prev = 31;
           _context5.t0 = _context5["catch"](10);
           console.error("Error retrieving question: ", _context5.t0);
-          res.status(500).send({
+          res.status(500).json({
             message: "Error retrieving question"
           });
         case 35:
@@ -389,7 +389,7 @@ app.post("/vote", /*#__PURE__*/function () {
           _context5.next = 42;
           break;
         case 41:
-          res.status(500).send({
+          res.status(500).json({
             message: "Invalid token or vote"
           });
         case 42:
