@@ -6,7 +6,7 @@ import { CognitoJwtVerifier } from "aws-jwt-verify";
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const PORT = 4001;
+const PORT = process.env.HTTP_PORT || 4001;
 const app = express();
 
 app.use(bodyParser.json());
@@ -15,6 +15,13 @@ app.use(express.static(path.join(__dirname, "client", "build")));
 
 app.get("/", (req, res) => {
   res.send("alive");
+});
+
+app.get("/flower", (req, res) => {
+  res.json({
+    name: "Dandelion",
+    colour: "Blue-ish",
+  });
 });
 
 const connUrl = `postgres://${process.env.RDS_USERNAME}:${process.env.RDS_PASSWORD}@${process.env.RDS_HOSTNAME}:${process.env.RDS_PORT}/${process.env.RDS_DATABASE}`;

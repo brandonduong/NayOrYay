@@ -12,13 +12,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 require("dotenv").config();
 var bodyParser = require("body-parser");
 var cors = require("cors");
-var PORT = 4001;
+var PORT = process.env.HTTP_PORT || 4001;
 var app = (0, _express["default"])();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(_express["default"]["static"](_path["default"].join(__dirname, "client", "build")));
 app.get("/", function (req, res) {
   res.send("alive");
+});
+app.get("/flower", function (req, res) {
+  res.json({
+    name: "Dandelion",
+    colour: "Blue-ish"
+  });
 });
 var connUrl = "postgres://".concat(process.env.RDS_USERNAME, ":").concat(process.env.RDS_PASSWORD, "@").concat(process.env.RDS_HOSTNAME, ":").concat(process.env.RDS_PORT, "/").concat(process.env.RDS_DATABASE);
 function newClient() {
