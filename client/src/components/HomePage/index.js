@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { isLoggedIn, login, logout } from "../../utils/helper";
 import CustomButton from "../CustomButton";

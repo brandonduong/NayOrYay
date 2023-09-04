@@ -1,5 +1,11 @@
 import "./App.css";
-import { Box, Container, ThemeProvider, createTheme } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import QuestionPage from "./components/QuestionPage";
 import CategoriesPage from "./components/CategoriesPage";
@@ -10,6 +16,7 @@ import { setCategories } from "./features/categories/categoriesSlice";
 import { getUser } from "./utils/helper";
 import { setFetched, setVotes } from "./features/votes/votesSlice";
 import QuestionsListPage from "./components/QuestionsListPage";
+import Ad from "./components/Ad";
 
 function App() {
   const dispatch = useDispatch();
@@ -72,26 +79,39 @@ function App() {
             backgroundColor: "#edeff1",
             flexGrow: 1,
             height: "100vh",
-            overflow: "auto",
           }}
         >
-          <Container
-            maxWidth="sm"
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
+          <Grid container alignItems={"center"}>
+            <Grid item sm={3}>
+              <Ad dataAdSlot={8428518966} />
+              <Ad dataAdSlot={8916685694} />
+              <Ad dataAdSlot={2100033897} />
+            </Grid>
+            <Grid item sm={6}>
+              <Container
+                maxWidth="sm"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100vh",
 
-              backgroundColor: "#edeff1",
-            }}
-          >
-            <Routes>
-              <Route index element={<HomePage />} />
-              <Route path="categories" element={<CategoriesPage />} />
-              <Route path=":category" element={<QuestionsListPage />} />
-              <Route path=":category/:id" element={<QuestionPage />} />
-            </Routes>
-          </Container>
+                  backgroundColor: "#edeff1",
+                }}
+              >
+                <Routes>
+                  <Route index element={<HomePage />} />
+                  <Route path="categories" element={<CategoriesPage />} />
+                  <Route path=":category" element={<QuestionsListPage />} />
+                  <Route path=":category/:id" element={<QuestionPage />} />
+                </Routes>
+              </Container>
+            </Grid>
+            <Grid item sm={3}>
+              <Ad dataAdSlot={8428518966} />
+              <Ad dataAdSlot={8916685694} />
+              <Ad dataAdSlot={2100033897} />
+            </Grid>
+          </Grid>
         </Box>
       </ThemeProvider>
     </BrowserRouter>
