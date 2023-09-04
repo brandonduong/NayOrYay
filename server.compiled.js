@@ -27,6 +27,12 @@ app.get("/flower", function (req, res) {
   });
 });
 var connUrl = "postgres://".concat(process.env.RDS_USERNAME, ":").concat(process.env.RDS_PASSWORD, "@").concat(process.env.RDS_HOSTNAME, ":").concat(process.env.RDS_PORT, "/").concat(process.env.RDS_DATABASE);
+app.get("/flower2", function (req, res) {
+  res.json({
+    name: "Dandelion",
+    colour: "Blue-ish"
+  });
+});
 function newClient() {
   return _newClient.apply(this, arguments);
 }
