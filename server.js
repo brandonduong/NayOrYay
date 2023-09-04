@@ -6,7 +6,7 @@ import { CognitoJwtVerifier } from "aws-jwt-verify";
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const PORT = process.env.HTTP_PORT || 4001;
+const PORT = 4001;
 const app = express();
 
 app.use(bodyParser.json());

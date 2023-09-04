@@ -12,7 +12,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 require("dotenv").config();
 var bodyParser = require("body-parser");
 var cors = require("cors");
-var PORT = process.env.HTTP_PORT || 4001;
+var PORT = 4001;
 var app = (0, _express["default"])();
 app.use(bodyParser.json());
 app.use(cors());

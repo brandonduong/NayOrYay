@@ -81,7 +81,7 @@ export default function HomePage() {
                 <CustomButton
                   variant={"outlined"}
                   color={"black"}
-                  onClick={() => login("http://localhost:3000/")}
+                  onClick={() => login(`${window.location.href}`)}
                 >
                   Login
                 </CustomButton>
@@ -89,7 +89,7 @@ export default function HomePage() {
                 <CustomButton
                   variant={"outlined"}
                   color={"black"}
-                  onClick={logout}
+                  onClick={() => logout(`${window.location.href}`)}
                 >
                   Logout
                 </CustomButton>
