@@ -20,7 +20,7 @@ app.use(_express["default"]["static"](_path["default"].join(__dirname, "client",
 app.get("/", function (req, res) {
   res.status(200).send("alive");
 });
-var connUrl = "postgres://".concat(process.env.RDS_USERNAME, ":").concat(process.env.RDS_PASSWORD, "@").concat(process.env.RDS_HOSTNAME, ":").concat(process.env.RDS_PORT, "/").concat(process.env.RDS_DATABASE);
+var connUrl = "postgres://".concat(process.env.RDS_USERNAME, ":").concat(process.env.RDS_PASSWORD, "@").concat(process.env.RDS_HOSTNAME, ":").concat(process.env.RDS_PORT, "/").concat(process.env.RDS_DB_NAME);
 function newClient() {
   return _newClient.apply(this, arguments);
 }

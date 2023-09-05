@@ -22,21 +22,12 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     getCategories();
-    getFlower();
 
     let user;
     if ((user = getUser())) {
       getVotes(user.sub);
     }
   }, []);
-
-  function getFlower() {
-    fetch("/flower")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
-  }
 
   function getCategories() {
     fetch(`/api/categories`)
