@@ -120,22 +120,24 @@ app.post("/api/questions/add", async (req, res) => {
       const { text, category } = req.body;
       console.log("adding question: ", text, category);
 
-      const q = {
-        text: "INSERT INTO questions(ts, yay, nay, text, category, author) VALUES (CURRENT_TIMESTAMP, 0, 0, $1, $2, $3)",
-        values: [text, category, payload["cognito:username"]],
-      };
-      const query = await client.query(q);
-
-      // Check if added question
-      if (query.rowCount === 1) {
-        // Update category entry
+      if (category.localeCompare("daily")) {
         const q = {
-          text: "UPDATE categories SET count=count+1 WHERE category=$1",
-          values: [category],
+          text: "INSERT INTO questions(ts, yay, nay, text, category, author) VALUES (CURRENT_TIMESTAMP, 0, 0, $1, $2, $3)",
+          values: [text, category, payload["cognito:username"]],
         };
         const query = await client.query(q);
 
-        res.status(200).json({ message: "Added question" });
+        // Check if added question
+        if (query.rowCount === 1) {
+          // Update category entry
+          const q = {
+            text: "UPDATE categories SET count=count+1 WHERE category=$1",
+            values: [category],
+          };
+          const query = await client.query(q);
+
+          res.status(200).json({ message: "Added question" });
+        }
       }
     } catch (err) {
       console.error("Error adding question: ", err);

@@ -69,15 +69,17 @@ export default function QuestionsListPage() {
                     </Grid>
                   ))}
                 </Grid>
-                <div style={{ marginBottom: "1rem" }}>
-                  <CustomButton
-                    variant={"contained"}
-                    color="black"
-                    onClick={() => setAdding(true)}
-                  >
-                    +
-                  </CustomButton>
-                </div>
+                {Boolean(category.localeCompare("daily")) && (
+                  <div style={{ marginBottom: "1rem" }}>
+                    <CustomButton
+                      variant={"contained"}
+                      color="black"
+                      onClick={() => setAdding(true)}
+                    >
+                      +
+                    </CustomButton>
+                  </div>
+                )}
               </>
             )}
           </>

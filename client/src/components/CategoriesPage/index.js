@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import Layout from "../Layout";
 import Category from "./Category";
-import { Grid } from "@mui/material";
+import { Divider, Grid } from "@mui/material";
 import CustomButton from "../CustomButton";
 import { useState } from "react";
 import { getUser, login } from "../../utils/helper";
@@ -19,6 +19,9 @@ export default function CategoriesPage() {
       login(`http://localhost:3000/`);
     }
   }
+
+  const daily = categories.find((c) => !c.category.localeCompare("daily"));
+  const others = categories.filter((c) => c.category.localeCompare("daily"));
 
   return (
     <>
@@ -41,7 +44,19 @@ export default function CategoriesPage() {
                   marginTop={1}
                   marginBottom={2}
                 >
-                  {categories.map(({ category, count, description, name }) => (
+                  <Grid item xs={12}>
+                    <Category
+                      category={daily.category}
+                      count={daily.count}
+                      description={daily.description}
+                      name={daily.name}
+                    ></Category>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Divider flexItem />
+                  </Grid>
+
+                  {others.map(({ category, count, description, name }) => (
                     <Grid item xs={12} key={`${category}`}>
                       <Category
                         category={category}
