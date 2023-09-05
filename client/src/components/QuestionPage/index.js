@@ -31,7 +31,6 @@ export default function QuestionPage() {
   const votes = useSelector((state) => state.votes.value);
   const fetched = useSelector((state) => state.votes.fetched);
   const dispatch = useDispatch();
-  console.log(question.id);
 
   useEffect(() => {
     if (!question) {

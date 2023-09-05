@@ -24,8 +24,6 @@ export default function QuestionsListPage() {
   const [loading, setLoading] = useState(fetchCategory);
   const [adding, setAdding] = useState(false);
 
-  console.log(questions);
-
   useEffect(() => {
     if (fetchCategory) {
       getQuestions();
