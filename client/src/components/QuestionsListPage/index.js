@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import Layout from "../Layout";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid } from "@mui/material";
+import { Grid, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
 import { setQuestions } from "../../features/questions/questionsSlice";
 import QuestionsListItem from "./QuestionsListItem";
@@ -67,15 +67,17 @@ export default function QuestionsListPage() {
                   ))}
                 </Grid>
                 {Boolean(category.localeCompare("daily")) && (
-                  <div style={{ marginBottom: "1rem" }}>
-                    <CustomButton
-                      variant={"contained"}
-                      color="black"
-                      onClick={() => setAdding(true)}
-                    >
-                      +
-                    </CustomButton>
-                  </div>
+                  <Tooltip title="Create your own question!">
+                    <div style={{ marginBottom: "1rem" }}>
+                      <CustomButton
+                        variant={"contained"}
+                        color="black"
+                        onClick={() => setAdding(true)}
+                      >
+                        +
+                      </CustomButton>
+                    </div>
+                  </Tooltip>
                 )}
               </>
             )}

@@ -58,9 +58,11 @@ export default function Layout({
                   }
                   sx={{
                     cursor: "pointer",
+                    marginRight: "0.25rem",
                   }}
                 />
               </Tooltip>
+
               <Tooltip title="Back">
                 <ArrowBackIcon
                   onClick={() => navigate(backPath)}

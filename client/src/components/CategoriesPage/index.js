@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import Layout from "../Layout";
 import Category from "./Category";
-import { Divider, Grid } from "@mui/material";
+import { Divider, Grid, Tooltip } from "@mui/material";
 import CustomButton from "../CustomButton";
 import { useState } from "react";
 import { getUser, login } from "../../utils/helper";
@@ -67,15 +67,17 @@ export default function CategoriesPage() {
                     </Grid>
                   ))}
                 </Grid>
-                <div style={{ marginBottom: "1rem" }}>
-                  <CustomButton
-                    variant={"contained"}
-                    color="black"
-                    onClick={handleAdd}
-                  >
-                    +
-                  </CustomButton>
-                </div>
+                <Tooltip title="Create your own category!">
+                  <div style={{ marginBottom: "1rem" }}>
+                    <CustomButton
+                      variant={"contained"}
+                      color="black"
+                      onClick={handleAdd}
+                    >
+                      +
+                    </CustomButton>
+                  </div>
+                </Tooltip>
               </>
             )}
           </>

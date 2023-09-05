@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Stack, Tooltip, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { isLoggedIn, login, logout } from "../../utils/helper";
 import CustomButton from "../CustomButton";
@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Layout from "../Layout";
 import Logo from "../Logo";
+import EmojiFoodBeverageIcon from "@mui/icons-material/EmojiFoodBeverage";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -121,6 +122,16 @@ export default function HomePage() {
           <Typography textAlign={"center"} variant="body1" lineHeight={1.25}>
             Edited by Brandon Duong
           </Typography>
+          <Tooltip title="Support me paying my student debt PLEASE">
+            <EmojiFoodBeverageIcon
+              onClick={() =>
+                (window.location.href = "https://ko-fi.com/brandonduong")
+              }
+              sx={{
+                cursor: "pointer",
+              }}
+            />
+          </Tooltip>
         </Layout>
       </div>
     </>
