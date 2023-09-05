@@ -75,7 +75,7 @@ app.get("/api/categories", async (req, res) => {
     res.json({ rows: query.rows });
   } catch (err) {
     console.error("Error retrieving category: ", err);
-    res.status(500).json({ message: "Error retrieving category" });
+    res.status(500).json({ message: "Error retrieving category: " + err });
   } finally {
     await client.end();
   }

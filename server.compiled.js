@@ -132,7 +132,7 @@ app.get("/api/categories", /*#__PURE__*/function () {
           _context.t0 = _context["catch"](3);
           console.error("Error retrieving category: ", _context.t0);
           res.status(500).json({
-            message: "Error retrieving category"
+            message: "Error retrieving category: " + _context.t0
           });
         case 17:
           _context.prev = 17;

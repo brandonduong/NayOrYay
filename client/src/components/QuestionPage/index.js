@@ -68,17 +68,16 @@ export default function QuestionPage() {
           dispatch(setVotes([...votes, newVote]));
           // Increase counter by 1 since counts outdated
           setQuestion({ ...question, [vote]: question[vote] + 1 });
-          const newQuestions = questions[category].filter(
-            (q) => q.id !== question.id
-          );
+          const newQuestions = [...questions[category]];
           const newQuestion = {
-            ...questions[category].filter((q) => q.id === question.id)[0],
+            ...question,
             [vote]: question[vote] + 1,
           };
+          newQuestions[id - 1] = newQuestion;
           dispatch(
             setQuestions({
               ...questions,
-              [category]: [...newQuestions, newQuestion],
+              [category]: [...newQuestions],
             })
           );
         }
