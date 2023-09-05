@@ -68,7 +68,7 @@ app.get("/api/categories", async (req, res) => {
     console.log("fetching categories: ");
 
     const q = {
-      text: "SELECT * FROM categories ORDER BY id",
+      text: "SELECT * FROM categories ORDER BY count DESC",
     };
     const query = await client.query(q);
     console.log(query.rows);
@@ -78,6 +78,34 @@ app.get("/api/categories", async (req, res) => {
     res.status(500).json({ message: "Error retrieving category: " + err });
   } finally {
     await client.end();
+  }
+});
+
+app.post("/api/categories/add", async (req, res) => {
+  const id_token = getCookie(req.headers.cookie, "id_token");
+  const payload = await verifyToken(id_token);
+
+  // Check if logged in
+  if (payload) {
+    const client = await newClient();
+    try {
+      const { name, description } = req.body;
+      console.log("adding category: ", name, description);
+
+      const q = {
+        text: "INSERT INTO categories(category, count, description) VALUES ($1, $2, $3)",
+        values: [name.toLowerCase(), 0, description],
+      };
+      const query = await client.query(q);
+      if (query.rowCount === 1) {
+        res.status(200).json({ message: "Added category" });
+      }
+    } catch (err) {
+      console.error("Error adding category: ", err);
+      res.status(500).json({ error: "Error adding category: " + err });
+    } finally {
+      await client.end();
+    }
   }
 });
 

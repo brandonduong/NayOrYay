@@ -16,6 +16,7 @@ import { setVotes } from "../../features/votes/votesSlice";
 import { getUser, login } from "../../utils/helper";
 import { setQuestions } from "../../features/questions/questionsSlice";
 import YayCounter from "./YayCounter";
+import Loading from "../Loading";
 
 export default function QuestionPage() {
   const { category, id } = useParams();
@@ -158,9 +159,7 @@ export default function QuestionPage() {
           )}
         </>
       ) : (
-        <Typography textAlign={"center"}>
-          <CircularProgress color="inherit" />
-        </Typography>
+        <Loading />
       )}
       <Divider />
     </Layout>

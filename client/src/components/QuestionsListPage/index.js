@@ -5,6 +5,8 @@ import { Grid, Stack, capitalize } from "@mui/material";
 import { useEffect, useState } from "react";
 import { setQuestions } from "../../features/questions/questionsSlice";
 import QuestionsListItem from "./QuestionsListItem";
+import Loading from "../Loading";
+import CustomButton from "../CustomButton";
 
 export default function QuestionsListPage() {
   const { category } = useParams();
@@ -45,21 +47,28 @@ export default function QuestionsListPage() {
         header
         backPath={"/categories"}
       >
-        {info && !loading && (
-          <Grid
-            container
-            direction={"column"}
-            wrap="nowrap"
-            sx={{ overflowY: "auto" }}
-            spacing={2}
-            marginBottom={2}
-          >
-            {questions[category].map((q, index) => (
-              <Grid item key={`${q.id}`}>
-                <QuestionsListItem question={q} index={index} />
-              </Grid>
-            ))}
-          </Grid>
+        {info && !loading ? (
+          <>
+            <Grid
+              container
+              spacing={1}
+              sx={{ overflowY: "auto" }}
+              marginBottom={2}
+            >
+              {questions[category].map((q, index) => (
+                <Grid item xs={12} key={`${q.id}`}>
+                  <QuestionsListItem question={q} index={index} />
+                </Grid>
+              ))}
+            </Grid>
+            <div style={{ marginBottom: "1rem" }}>
+              <CustomButton variant={"contained"} color="black">
+                +
+              </CustomButton>
+            </div>
+          </>
+        ) : (
+          <Loading />
         )}
       </Layout>
     </>
