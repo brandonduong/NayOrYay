@@ -8,7 +8,7 @@ import {
   capitalize,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../Layout";
 import CustomButton from "../CustomButton";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +31,7 @@ export default function QuestionPage() {
   const votes = useSelector((state) => state.votes.value);
   const fetched = useSelector((state) => state.votes.fetched);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!question) {
@@ -115,13 +116,25 @@ export default function QuestionPage() {
     >
       {!loading ? (
         <>
+          <Typography textAlign={"center"} variant="body1">
+            Asked by:
+          </Typography>
           <Typography
             textAlign={"center"}
             variant="body1"
-            fontWeight={700}
             marginBottom={"2rem"}
+            fontWeight={700}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
           >
-            Asked by: {question.author}
+            <span
+              onClick={() => navigate(`/profile/${question.author}`)}
+              style={{ cursor: "pointer" }}
+            >
+              {question.author}
+            </span>
           </Typography>
 
           {!voting && (fetched || !getUser()) && (
