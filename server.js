@@ -275,7 +275,7 @@ app.get("/api/profile/:username", async (req, res) => {
     console.log("fetching profile for: ", username);
 
     const q = {
-      text: "SELECT * FROM votes INNER JOIN questions ON votes.questionid = questions.id WHERE username=$1",
+      text: "SELECT * FROM votes INNER JOIN questions ON votes.questionid = questions.id WHERE username=$1 ORDER BY ts",
       values: [username],
     };
     const query = await client.query(q);
