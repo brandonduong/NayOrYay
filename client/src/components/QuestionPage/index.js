@@ -65,7 +65,11 @@ export default function QuestionPage() {
       .then((data) => {
         console.log(data);
         // Add vote to store
-        const newVote = { sub: getUser().sub, vote, questionid: qid };
+        const newVote = {
+          username: getUser()["cognito:username"],
+          vote,
+          questionid: qid,
+        };
         if (!voted()) {
           dispatch(setVotes([...votes, newVote]));
           // Increase counter by 1 since counts outdated

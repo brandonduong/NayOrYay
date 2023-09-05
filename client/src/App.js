@@ -25,7 +25,7 @@ function App() {
 
     let user;
     if ((user = getUser())) {
-      getVotes(user.sub);
+      getVotes(user["cognito:username"]);
     }
   }, []);
 
@@ -39,8 +39,8 @@ function App() {
       .catch((error) => console.error(error));
   }
 
-  function getVotes(sub) {
-    fetch(`/api/votes/${sub}`)
+  function getVotes(username) {
+    fetch(`/api/votes/${username}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

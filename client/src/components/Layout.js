@@ -1,9 +1,10 @@
-import { Divider, Grid, Typography } from "@mui/material";
+import { Divider, Grid, Tooltip, Typography } from "@mui/material";
 import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDown";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../utils/helper";
 import Logo from "./Logo";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import EmojiFoodBeverageIcon from "@mui/icons-material/EmojiFoodBeverage";
 
 export default function Layout({
   header,
@@ -43,17 +44,31 @@ export default function Layout({
               </div>
             </Grid>
             <Grid item xs={4} textAlign={"center"}>
-              <Typography variant="body1" fontWeight={700}>
-                {getUser()["cognito:username"]}
-              </Typography>
+              <Tooltip title="Profile">
+                <Typography variant="body1" fontWeight={700}>
+                  {getUser()["cognito:username"]}
+                </Typography>
+              </Tooltip>
             </Grid>
             <Grid item xs={4} textAlign={"end"}>
-              <ArrowBackIcon
-                onClick={() => navigate(backPath)}
-                sx={{
-                  cursor: "pointer",
-                }}
-              />
+              <Tooltip title="Support me paying my student debt PLEASE">
+                <EmojiFoodBeverageIcon
+                  onClick={() =>
+                    (window.location.href = "https://ko-fi.com/brandonduong")
+                  }
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                />
+              </Tooltip>
+              <Tooltip title="Back">
+                <ArrowBackIcon
+                  onClick={() => navigate(backPath)}
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                />
+              </Tooltip>
             </Grid>
           </Grid>
           <Divider sx={{ marginBottom: "2rem" }} />

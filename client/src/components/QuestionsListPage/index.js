@@ -1,14 +1,13 @@
 import { useParams } from "react-router-dom";
 import Layout from "../Layout";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Stack, capitalize } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { setQuestions } from "../../features/questions/questionsSlice";
 import QuestionsListItem from "./QuestionsListItem";
 import Loading from "../Loading";
 import CustomButton from "../CustomButton";
 import AddQuestionForm from "./AddQuestionForm";
-import { getName } from "../../utils/helper";
 
 export default function QuestionsListPage() {
   const { category } = useParams();

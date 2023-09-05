@@ -190,15 +190,15 @@ app.get("/api/question/:category/:offset", async (req, res) => {
   }
 });
 
-app.get("/api/votes/:sub", async (req, res) => {
+app.get("/api/votes/:username", async (req, res) => {
   const client = await newClient();
   try {
-    const { sub } = req.params;
-    console.log("fetching votes for: ", sub);
+    const { username } = req.params;
+    console.log("fetching votes for: ", username);
 
     const q = {
-      text: "SELECT * FROM votes WHERE sub=$1",
-      values: [sub],
+      text: "SELECT * FROM votes WHERE username=$1",
+      values: [username],
     };
     const query = await client.query(q);
     console.log(query.rows);
@@ -223,8 +223,8 @@ app.post("/api/vote", async (req, res) => {
     try {
       // Check if user didn't already vote for this question
       const voteQ = {
-        text: "SELECT * FROM votes WHERE sub=$1 AND questionid=$2",
-        values: [payload.sub, id],
+        text: "SELECT * FROM votes WHERE username=$1 AND questionid=$2",
+        values: [payload["cognito:username"], id],
       };
       const votes = await client.query(voteQ);
       if (votes.rows.length === 0) {
@@ -247,8 +247,8 @@ app.post("/api/vote", async (req, res) => {
         if (query.rowCount === 1) {
           // Add vote
           const voteQ = {
-            text: "INSERT INTO votes (sub, questionid, vote) VALUES ($1, $2, $3)",
-            values: [payload.sub, id, vote],
+            text: "INSERT INTO votes (username, questionid, vote) VALUES ($1, $2, $3)",
+            values: [payload["cognito:username"], id, vote],
           };
           await client.query(voteQ);
         }
