@@ -17,13 +17,6 @@ app.get("/", (req, res) => {
   res.status(200).send("alive");
 });
 
-app.get("/flower", (req, res) => {
-  res.json({
-    name: "Dandelion",
-    colour: "Blue-ish",
-  });
-});
-
 const connUrl = `postgres://${process.env.RDS_USERNAME}:${process.env.RDS_PASSWORD}@${process.env.RDS_HOSTNAME}:${process.env.RDS_PORT}/${process.env.RDS_DATABASE}`;
 async function newClient() {
   const client = new Client({
@@ -86,24 +79,6 @@ app.get("/api/categories", async (req, res) => {
   } finally {
     await client.end();
   }
-});
-
-app.get("/flower2", async (req, res) => {
-  let data;
-  const client = await newClient();
-  try {
-    const q = {
-      text: "SELECT * FROM categories ORDER BY id",
-    };
-
-    console.log("test");
-    data = { rows: [{ test: "test" }] };
-  } catch (err) {
-    console.error("Error retrieving category: ", err);
-    data = { message: "Error retrieving category" };
-  } finally {
-  }
-  res.json(data);
 });
 
 app.get("/api/questions/:category", async (req, res) => {
