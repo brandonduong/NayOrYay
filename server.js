@@ -268,6 +268,27 @@ app.post("/api/vote", async (req, res) => {
   }
 });
 
+app.get("/api/profile/:username", async (req, res) => {
+  const client = await newClient();
+  try {
+    const { username } = req.params;
+    console.log("fetching profile for: ", username);
+
+    const q = {
+      text: "SELECT * FROM votes INNER JOIN questions ON votes.questionid = questions.id WHERE username=$1",
+      values: [username],
+    };
+    const query = await client.query(q);
+    console.log(query.rows);
+    res.json({ rows: query.rows });
+  } catch (err) {
+    console.error("Error retrieving votes: ", err);
+    res.status(500).json({ message: "Error retrieving votes" });
+  } finally {
+    await client.end();
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server listening at port ${PORT}.`);
 });

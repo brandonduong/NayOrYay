@@ -17,6 +17,7 @@ import { getUser } from "./utils/helper";
 import { setFetched, setVotes } from "./features/votes/votesSlice";
 import QuestionsListPage from "./components/QuestionsListPage";
 import Ad from "./components/Ad";
+import ProfilePage from "./components/ProfilePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -103,6 +104,7 @@ function App() {
                   <Route path="categories" element={<CategoriesPage />} />
                   <Route path=":category" element={<QuestionsListPage />} />
                   <Route path=":category/:id" element={<QuestionPage />} />
+                  <Route path="profile/:username" element={<ProfilePage />} />
                 </Routes>
               </Container>
             </Grid>

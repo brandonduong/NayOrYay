@@ -8,7 +8,12 @@ export default function CustomListItem({ title, secondary, extra }) {
       alignItems={"center"}
     >
       <div>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          fontFamily={"Roboto Condensed"}
+        >
           {title}
         </Typography>
 

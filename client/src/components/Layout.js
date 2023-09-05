@@ -45,7 +45,16 @@ export default function Layout({
             </Grid>
             <Grid item xs={4} textAlign={"center"}>
               <Tooltip title="Profile">
-                <Typography variant="body1" fontWeight={700}>
+                <Typography
+                  variant="body1"
+                  fontWeight={700}
+                  onClick={() =>
+                    navigate(`/profile/${getUser()["cognito:username"]}`)
+                  }
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                >
                   {getUser()["cognito:username"]}
                 </Typography>
               </Tooltip>
@@ -87,7 +96,7 @@ export default function Layout({
       </Typography>
       {subtitle && (
         <Typography
-          variant="h4"
+          variant="h5"
           textAlign={"center"}
           sx={{ marginBottom: "2rem" }}
         >
