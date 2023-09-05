@@ -1,20 +1,19 @@
-import { Typography, capitalize } from "@mui/material";
+import { capitalize } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import CustomCard from "../CustomCard";
+import CustomListItem from "../CustomListItem";
 
-export default function Category({ category, count, description }) {
+export default function Category({ category, count, description, name }) {
   const navigate = useNavigate();
 
   return (
     <CustomCard onClick={() => navigate(`/${category}`)}>
-      <Typography gutterBottom variant="h5" component="div">
-        {capitalize(category)}
-      </Typography>
-      <Typography gutterBottom variant="body2" color="text.secondary">
-        {description}
-      </Typography>
-      <Typography variant="body2">{count} Questions</Typography>
+      <CustomListItem
+        title={name}
+        secondary={description}
+        extra={`${count} Questions`}
+      />
     </CustomCard>
   );
 }

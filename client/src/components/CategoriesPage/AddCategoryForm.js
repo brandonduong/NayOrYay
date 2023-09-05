@@ -10,6 +10,7 @@ import CustomButton from "../CustomButton";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategories } from "../../features/categories/categoriesSlice";
+import CustomForm from "../CustomForm";
 
 export default function AddCategoryForm({ setAdding }) {
   const defaultForm = { name: "", description: "" };
@@ -48,17 +49,16 @@ export default function AddCategoryForm({ setAdding }) {
           if (!data.error) {
             // Add category to store
             const newCategory = {
-              category: form.name,
+              category: form.name.toLowerCase(),
               count: 0,
               description: form.description,
+              name: form.name,
             };
-            const newCategories = [...categories, newCategory].sort(
-              (a, b) => a.count < b.count
-            );
+            const newCategories = [...categories, newCategory];
             dispatch(setCategories(newCategories));
           }
 
-          setForm({ name: "", description: "" });
+          setForm(defaultForm);
           setSubmitting(false);
           setAdding(false);
         })
@@ -87,68 +87,37 @@ export default function AddCategoryForm({ setAdding }) {
 
   return (
     <>
-      <Card
-        sx={{
-          border: "1px solid black",
-          backgroundColor: "#f6f7f8",
-          marginTop: "1rem",
-        }}
-        variant="outlined"
+      <CustomForm
+        title="New Category"
+        cancel={() => setAdding(false)}
+        confirm={submit}
+        disabled={submitting}
       >
-        <Typography
-          marginTop={2}
-          gutterBottom
-          variant="h5"
-          textAlign={"center"}
-          lineHeight={1}
-        >
-          New Category
-        </Typography>
-        <Stack spacing={2} padding={2}>
-          <TextField
-            label="Name:"
-            value={form.name}
-            name="name"
-            onChange={handleChange}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            error={Boolean(error.name)}
-            helperText={error.name}
-            disabled={submitting}
-          />
-          <TextField
-            label="Description:"
-            value={form.description}
-            name="description"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            onChange={handleChange}
-            error={Boolean(error.description)}
-            helperText={error.description}
-            disabled={submitting}
-          />
-        </Stack>
-      </Card>
-      <Stack direction={"row"} marginTop={2} spacing={2}>
-        <CustomButton
-          variant={"outlined"}
-          color="black"
-          onClick={() => setAdding(false)}
+        <TextField
+          label="Name:"
+          value={form.name}
+          name="name"
+          onChange={handleChange}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          error={Boolean(error.name)}
+          helperText={error.name}
           disabled={submitting}
-        >
-          Cancel
-        </CustomButton>
-        <CustomButton
-          variant={"contained"}
-          color="black"
-          onClick={submit}
+        />
+        <TextField
+          label="Description:"
+          value={form.description}
+          name="description"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={handleChange}
+          error={Boolean(error.description)}
+          helperText={error.description}
           disabled={submitting}
-        >
-          Create
-        </CustomButton>
-      </Stack>
+        />
+      </CustomForm>
     </>
   );
 }

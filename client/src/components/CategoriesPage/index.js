@@ -6,6 +6,7 @@ import CustomButton from "../CustomButton";
 import { useState } from "react";
 import { getUser, login } from "../../utils/helper";
 import AddCategoryForm from "./AddCategoryForm";
+import Loading from "../Loading";
 
 export default function CategoriesPage() {
   const categories = useSelector((state) => state.categories.value);
@@ -27,46 +28,44 @@ export default function CategoriesPage() {
         header
         backPath={"/"}
       >
-        {adding ? (
-          <AddCategoryForm setAdding={setAdding} />
-        ) : (
+        {categories.length > 0 ? (
           <>
-            <Grid
-              container
-              spacing={1}
-              sx={{ overflowY: "auto" }}
-              marginTop={1}
-              marginBottom={2}
-            >
-              {categories.map(({ category, count, description }) => (
-                <Grid item xs={12} sm={12} key={`${category}`}>
-                  <Category
-                    category={category}
-                    count={count}
-                    description={description}
-                  ></Category>
+            {adding ? (
+              <AddCategoryForm setAdding={setAdding} />
+            ) : (
+              <>
+                <Grid
+                  container
+                  spacing={1}
+                  sx={{ overflowY: "auto" }}
+                  marginTop={1}
+                  marginBottom={2}
+                >
+                  {categories.map(({ category, count, description, name }) => (
+                    <Grid item xs={12} key={`${category}`}>
+                      <Category
+                        category={category}
+                        count={count}
+                        description={description}
+                        name={name}
+                      ></Category>
+                    </Grid>
+                  ))}
                 </Grid>
-              ))}
-              {categories.map(({ category, count, description }) => (
-                <Grid item xs={12} sm={12} key={`${category}`}>
-                  <Category
-                    category={category}
-                    count={count}
-                    description={description}
-                  ></Category>
-                </Grid>
-              ))}
-            </Grid>
-            <div style={{ marginBottom: "1rem" }}>
-              <CustomButton
-                variant={"contained"}
-                color="black"
-                onClick={handleAdd}
-              >
-                +
-              </CustomButton>
-            </div>
+                <div style={{ marginBottom: "1rem" }}>
+                  <CustomButton
+                    variant={"contained"}
+                    color="black"
+                    onClick={handleAdd}
+                  >
+                    +
+                  </CustomButton>
+                </div>
+              </>
+            )}
           </>
+        ) : (
+          <Loading />
         )}
       </Layout>
     </>

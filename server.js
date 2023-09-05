@@ -93,8 +93,8 @@ app.post("/api/categories/add", async (req, res) => {
       console.log("adding category: ", name, description);
 
       const q = {
-        text: "INSERT INTO categories(category, count, description) VALUES ($1, $2, $3)",
-        values: [name.toLowerCase(), 0, description],
+        text: "INSERT INTO categories(category, count, description, name) VALUES ($1, $2, $3, $4)",
+        values: [name.toLowerCase(), 0, description, name],
       };
       const query = await client.query(q);
       if (query.rowCount === 1) {
@@ -103,6 +103,43 @@ app.post("/api/categories/add", async (req, res) => {
     } catch (err) {
       console.error("Error adding category: ", err);
       res.status(500).json({ error: "Error adding category: " + err });
+    } finally {
+      await client.end();
+    }
+  }
+});
+
+app.post("/api/questions/add", async (req, res) => {
+  const id_token = getCookie(req.headers.cookie, "id_token");
+  const payload = await verifyToken(id_token);
+
+  // Check if logged in
+  if (payload) {
+    const client = await newClient();
+    try {
+      const { text, category } = req.body;
+      console.log("adding question: ", text, category);
+
+      const q = {
+        text: "INSERT INTO questions(ts, yay, nay, text, category, author) VALUES (CURRENT_TIMESTAMP, 0, 0, $1, $2, $3)",
+        values: [text, category, payload["cognito:username"]],
+      };
+      const query = await client.query(q);
+
+      // Check if added question
+      if (query.rowCount === 1) {
+        // Update category entry
+        const q = {
+          text: "UPDATE categories SET count=count+1 WHERE category=$1",
+          values: [category],
+        };
+        const query = await client.query(q);
+
+        res.status(200).json({ message: "Added question" });
+      }
+    } catch (err) {
+      console.error("Error adding question: ", err);
+      res.status(500).json({ error: "Error adding question: " + err });
     } finally {
       await client.end();
     }

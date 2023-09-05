@@ -7,13 +7,14 @@ import { setQuestions } from "../../features/questions/questionsSlice";
 import QuestionsListItem from "./QuestionsListItem";
 import Loading from "../Loading";
 import CustomButton from "../CustomButton";
+import AddQuestionForm from "./AddQuestionForm";
+import { getName } from "../../utils/helper";
 
 export default function QuestionsListPage() {
   const { category } = useParams();
   const categories = useSelector((state) => state.categories.value);
   const info =
     categories.filter((c) => !c.category.localeCompare(category))[0] || false;
-
   const questions = useSelector((state) => state.questions.value);
   const dispatch = useDispatch();
 
@@ -21,12 +22,15 @@ export default function QuestionsListPage() {
     !questions[category] || questions[category].length !== info.count;
 
   const [loading, setLoading] = useState(fetchCategory);
+  const [adding, setAdding] = useState(false);
+
+  console.log(questions);
 
   useEffect(() => {
     if (fetchCategory) {
       getQuestions();
     }
-  }, []);
+  }, [adding]);
 
   function getQuestions() {
     fetch(`/api/questions/${category}`)
@@ -42,30 +46,40 @@ export default function QuestionsListPage() {
   return (
     <>
       <Layout
-        title={capitalize(category)}
+        title={info.name}
         subtitle={info.description}
         header
         backPath={"/categories"}
       >
         {info && !loading ? (
           <>
-            <Grid
-              container
-              spacing={1}
-              sx={{ overflowY: "auto" }}
-              marginBottom={2}
-            >
-              {questions[category].map((q, index) => (
-                <Grid item xs={12} key={`${q.id}`}>
-                  <QuestionsListItem question={q} index={index} />
+            {adding ? (
+              <AddQuestionForm setAdding={setAdding} name={info.name} />
+            ) : (
+              <>
+                <Grid
+                  container
+                  spacing={1}
+                  sx={{ overflowY: "auto" }}
+                  marginBottom={2}
+                >
+                  {questions[category].map((q, index) => (
+                    <Grid item xs={12} key={`${q.id}`}>
+                      <QuestionsListItem question={q} index={index} />
+                    </Grid>
+                  ))}
                 </Grid>
-              ))}
-            </Grid>
-            <div style={{ marginBottom: "1rem" }}>
-              <CustomButton variant={"contained"} color="black">
-                +
-              </CustomButton>
-            </div>
+                <div style={{ marginBottom: "1rem" }}>
+                  <CustomButton
+                    variant={"contained"}
+                    color="black"
+                    onClick={() => setAdding(true)}
+                  >
+                    +
+                  </CustomButton>
+                </div>
+              </>
+            )}
           </>
         ) : (
           <Loading />

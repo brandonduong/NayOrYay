@@ -13,7 +13,7 @@ import Layout from "../Layout";
 import CustomButton from "../CustomButton";
 import { useDispatch, useSelector } from "react-redux";
 import { setVotes } from "../../features/votes/votesSlice";
-import { getUser, login } from "../../utils/helper";
+import { getName, getUser, login } from "../../utils/helper";
 import { setQuestions } from "../../features/questions/questionsSlice";
 import YayCounter from "./YayCounter";
 import Loading from "../Loading";
@@ -21,6 +21,7 @@ import Loading from "../Loading";
 export default function QuestionPage() {
   const { category, id } = useParams();
   const questions = useSelector((state) => state.questions.value);
+  const categories = useSelector((state) => state.categories.value);
 
   const [question, setQuestion] = useState(
     questions[category] ? questions[category][id - 1] : false
@@ -30,6 +31,7 @@ export default function QuestionPage() {
   const votes = useSelector((state) => state.votes.value);
   const fetched = useSelector((state) => state.votes.fetched);
   const dispatch = useDispatch();
+  console.log(question.id);
 
   useEffect(() => {
     if (!question) {
@@ -50,7 +52,7 @@ export default function QuestionPage() {
       .catch((error) => console.error(error));
   }
 
-  function voteQuestion(id, vote) {
+  function voteQuestion(qid, vote) {
     setVoting(true);
     fetch(`/api/vote`, {
       method: "POST",
@@ -58,23 +60,25 @@ export default function QuestionPage() {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id, vote }),
+      body: JSON.stringify({ id: qid, vote }),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
         // Add vote to store
-        const newVote = { sub: getUser().sub, vote, questionid: id };
+        const newVote = { sub: getUser().sub, vote, questionid: qid };
         if (!voted()) {
           dispatch(setVotes([...votes, newVote]));
           // Increase counter by 1 since counts outdated
           setQuestion({ ...question, [vote]: question[vote] + 1 });
           const newQuestions = [...questions[category]];
+
           const newQuestion = {
             ...question,
             [vote]: question[vote] + 1,
           };
           newQuestions[id - 1] = newQuestion;
+
           dispatch(
             setQuestions({
               ...questions,
@@ -101,7 +105,7 @@ export default function QuestionPage() {
 
   return (
     <Layout
-      title={`${capitalize(category)} - No. ${id}`}
+      title={`${getName(category, categories)} - No. ${id}`}
       subtitle={question && question.text}
       header
       backPath={`/${category}`}

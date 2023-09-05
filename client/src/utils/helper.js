@@ -44,3 +44,13 @@ export const parseJwt = (token) => {
 export function getUser() {
   return parseJwt(getCookie("id_token")) || false;
 }
+
+export function getName(categoryId, categories) {
+  let category;
+  if (
+    (category = categories.find((c) => !c.category.localeCompare(categoryId)))
+  ) {
+    return category.name;
+  }
+  return false;
+}
