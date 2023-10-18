@@ -60,4 +60,4 @@ In ./ and ./client
     npm run build
     eb deploy ENVIRONMENT_NAME
 
-Need ec2 instance that is connected to postgresql database from RDS
+Need ec2 instance that is connected to postgresql database from RDS. Found out the hard way AWS RDS, Elastic Beanstalk, and EC2 are expensive, so no live deployment.
